@@ -1,5 +1,8 @@
 'use strict';
 var dataProvider = require('../../../data/api/v1/Event.js');
+var axios = require('axios');
+var constant = require('../../../constants.js');
+var {generateDID} = require('../../../utils.js');
 /**
  * Operations on /api/v1/Event
  */
@@ -17,14 +20,15 @@ module.exports = {
          * For response `default` status 200 is used.
          */
         var status = 200;
-        var provider = dataProvider['get']['200'];
-        provider(req, res, function (err, data) {
-            if (err) {
-                next(err);
-                return;
-            }
-            res.status(status).send(data && data.responses);
-        });
+        var errStatus = 500;
+        try{ 
+            axios.get(`${constant.registryUrl}/api/v1/Event`).then((resFromReg) => {
+                res.status(status).send(resFromReg.data);
+            })
+        } catch (err) {
+            res.status(errStatus).send(err);
+        }
+
     },
     /**
      * summary: 
@@ -39,13 +43,16 @@ module.exports = {
          * For response `default` status 200 is used.
          */
         var status = 200;
-        var provider = dataProvider['post']['200'];
-        provider(req, res, function (err, data) {
-            if (err) {
-                next(err);
-                return;
-            }
-            res.status(status).send(data && data.responses);
-        });
+        var errStatus = 500;
+        try{ 
+            let reqToSend = req.body;
+            reqToSend["did"] = generateDID("someName");
+            axios.post(`${constant.registryUrl}/api/v1/Event`, reqToSend).then((resFromReg) => {
+                res.status(status).send(resFromReg.data);
+            })
+
+        } catch (err) {
+            res.status(errStatus).send(err.response.data);
+        }
     }
 };

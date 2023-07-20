@@ -1,8 +1,9 @@
 import { useQuery } from "react-query";
 import { apiRoutes } from "../routes";
-import { Exhibit, ExhibitDetailsResponse } from "../types/exhibit";
+import { Exhibit } from "../types/exhibit";
 import { axiosInst } from "./axios";
 
+import { useKeycloak } from "@react-keycloak/web";
 interface ExhibitsResponse {
   visited: Exhibit[];
   unvisited: Exhibit[];
@@ -25,17 +26,20 @@ export const useExhibitsDataOnId = (exhibitId: string) => {
     ["exhibitsDet", exhibitId],
     () =>
       axiosInst
-        .get<Exhibit>(`${apiRoutes.EXHIBITS_DET}${exhibitId}`)
+        .get<Exhibit>(`${apiRoutes.EXHIBITS_DET}/${exhibitId}`)
         .then((res) => res.data)
   );
 }
 
 export const useExhibitsQrcode = (qrId: string) => {
-  return useQuery(
-    ["exhibitsQR", qrId],
-    () =>
+  console.log('qr ', qrId)
+  const { keycloak } = useKeycloak();
+  return useQuery({
+    queryKey: ["qrCodescan"],
+    enabled: keycloak.authenticated,
+    queryFn: () =>
       axiosInst
-        .put<any>(`${apiRoutes.EXHIBIT_QRSCAN}${qrId}`)
+        .put<any>(`${apiRoutes.EXHIBIT_QRSCAN}/${qrId}`)
         .then((res) => {console.log('qr scan res ', res); return res})
-  );
+  });
 }

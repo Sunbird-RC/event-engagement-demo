@@ -15,7 +15,7 @@ const CredentialVerification: FC<any> = (): ReactElement => {
             justifyContent: 'center',
             width: '100%'
         }}>
-            <ToolBar hideBtn={true} show={false} badgeOpt={false} toolbarHeight={false}/>
+            <ToolBar hideBtn={false} show={false} badgeOpt={false} toolbarHeight={false}/>
             <Box sx={{ my: 10, width: '100%'}}>
                 <Box mx={4} mt={8} border={'2px solid black'}>
                     <img src={`${qrcode}`} width={'100%'} style={{display:'flex', alignItems:'center'}}/>

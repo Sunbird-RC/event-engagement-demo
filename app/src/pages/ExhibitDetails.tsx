@@ -13,14 +13,13 @@ import { grey } from "@mui/material/colors";
 import { FC, ReactElement, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import Quiz from "../Quiz/Quiz";
-import { useExhibitsDataOnId } from "../api/exhibit";
+import { useExhibitsDataOnId, useExhibitsQrcode } from "../api/exhibit";
 import { useSubmitQuiz } from "../api/quiz";
 import ToolBar from "../layout/AppBar";
 import { pageRoutes } from "../routes";
 import ArrowBackOutlinedIcon from "@mui/icons-material/ArrowBackOutlined";
 import { QuizResult } from "../types/quiz";
-import { Exhibit } from "../types/exhibit";
-// import QuizImg from '../assets/QuizImg.svg';
+import QuizImg from '../assets/QuizImg.svg';
 
 const Puller = styled(Box)(({ theme }) => ({
   width: 48,
@@ -59,16 +58,16 @@ const ExhibitCardDetails: FC<any> = (): ReactElement => {
   console.log('data ', data)
   const questionsData = exhibit?.quizConfig;
 
+  const { data: qrData } = useExhibitsQrcode(entity.qrId);
   const openQrcode = (qrId: any) => {
-    console.log('data on qr scan ', qrId);
-    // const { data } = useExhibitsQrcode(qrId);
-    navigate(pageRoutes.SCAN_QR)
+    console.log('data on qr scan ', qrData);
+    // navigate(pageRoutes.SCAN_QR)
   }
   // const { data: questionsData } = useQuizQuestions(
   //   exhibit.did
   // );
   const [loading, setLoading] = useState(false);
-  const { mutate: submitQuiz } = useSubmitQuiz(exhibit?.osid);
+  const { mutate: submitQuiz } = useSubmitQuiz(state.data.osid);
 
   const handleFinishQuiz = (data: any) => {
     setLoading(!loading);
@@ -145,7 +144,7 @@ const ExhibitCardDetails: FC<any> = (): ReactElement => {
                 transform: "translate(25%, 0%)",
               }}
             >
-              {/* <img src={QuizImg} width={60} height={60}></img> */}
+              <img src={QuizImg} width={60} height={60}></img>
               <div style={{ margin: "1rem" }}>
                 <Typography
                   variant="body2"

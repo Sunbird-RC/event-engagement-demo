@@ -25,6 +25,6 @@ export const useQrCode = () => {
     queryFn: () =>
       axiosInst
         .get<string>(apiRoutes.QR_CODE)
-        .then((res) => {console.log(res); return res;})
+        .then((res) => {console.log(res); return res.data})
   });
 };

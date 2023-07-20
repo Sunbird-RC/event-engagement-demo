@@ -43,8 +43,8 @@ function ToolBar(props: ToolbarProps) {
   const { keycloak } = useKeycloak();
   const { data: badgeData } = useBadgeData();
   console.log('badgeData ', badgeData);
-  const badgeWonCount = badgeData && badgeData?.filter((bg: any) => bg.badgeWon).length || 0;
-  const badgeLeftCount = badgeData && badgeData?.filter((bg: any) => !bg.badgeWon).length || 0;
+  const badgeWonCount = badgeData && badgeData?.filter((bg: any) => bg.results.badgeWon).length || 0;
+  const badgeLeftCount = badgeData && badgeData?.filter((bg: any) => !bg.results.badgeWon).length || 0;
 
   const { data: visitorDetails } = useVistorDetails();
 

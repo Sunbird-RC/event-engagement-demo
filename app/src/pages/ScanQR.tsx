@@ -7,28 +7,7 @@ import { pageRoutes } from "../routes";
 
 const ScanQR: React.FC<{}> = () => {
   const navigate = useNavigate();
-  // const [text, setData] = useState('');
-  // useEffect(() => {
-  //   console.log('res', text);
-  //   const { data } = useExhibitsQrcode(text);
-  //   console.log('after scan ', data)
-  //   if (data.message == 'SUCCESSFUL') {
-  //     navigate(pageRoutes.EXHIBITS_HOME)
-  //   } else {
-  //     console.log('error')
-  //   }
-  // })
-  // function scanQrCode(decodeText: string) {
-  //   console.log('before scan ', decodeText)
-  //   setDecodeText(useExhibitsQrcode(decodeText))
-  //   console.log('after scan ', data)
-  //   if (data.message == 'SUCCESSFUL') {
-  //     navigate(pageRoutes.EXHIBITS_HOME)
-  //   } else {
-  //     console.log('error')
-  //   }
-  // }
-  // const { data } = useExhibitsQrcode(decodeText);
+
 
   return (
     <Box>

@@ -1,9 +1,7 @@
 import ArticleRoundedIcon from "@mui/icons-material/ArticleRounded";
 import {
-  Backdrop,
   Box,
   Button,
-  CircularProgress,
   InputLabel,
   SwipeableDrawer,
   Typography,
@@ -13,13 +11,14 @@ import { grey } from "@mui/material/colors";
 import { FC, ReactElement, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import Quiz from "../Quiz/Quiz";
-import { useExhibitsDataOnId, useExhibitsQrcode } from "../api/exhibit";
+import { useExhibitsDataOnId } from "../api/exhibit";
 import { useSubmitQuiz } from "../api/quiz";
 import ToolBar from "../layout/AppBar";
 import { pageRoutes } from "../routes";
 import ArrowBackOutlinedIcon from "@mui/icons-material/ArrowBackOutlined";
 import { QuizResult } from "../types/quiz";
 import QuizImg from '../assets/QuizImg.svg';
+import LoadingController from "../layout/Loader";
 
 const Puller = styled(Box)(({ theme }) => ({
   width: 48,
@@ -43,29 +42,14 @@ const ExhibitCardDetails: FC<any> = (): ReactElement => {
     navigate(-1);
   };
 
-  // const { exhibitId } = useParams();
-  // const exhibit: Exhibit = state;
-  // const { data } = useExhibitsData();
-  // const exhibit: Exhibit = useMemo(() => {
-  //   return (
-  //     data?.visited.find((x) => x.did === exhibitId) ||
-  //     data?.unvisited.find((x) => x.did === exhibitId) ||
-  //     ({} as Exhibit)
-  //   );
-  // }, [exhibitId, data]);
-  const { data } = useExhibitsDataOnId(entity.osid);
+  const { data } = useExhibitsDataOnId(state.data.osid);
   let exhibit = data;
   console.log('data ', data)
   const questionsData = exhibit?.quizConfig;
 
-  const { data: qrData } = useExhibitsQrcode(entity.qrId);
   const openQrcode = (qrId: any) => {
-    console.log('data on qr scan ', qrData);
-    // navigate(pageRoutes.SCAN_QR)
+    navigate(pageRoutes.SCAN_QR)
   }
-  // const { data: questionsData } = useQuizQuestions(
-  //   exhibit.did
-  // );
   const [loading, setLoading] = useState(false);
   const { mutate: submitQuiz } = useSubmitQuiz(state.data.osid);
 
@@ -125,7 +109,7 @@ const ExhibitCardDetails: FC<any> = (): ReactElement => {
         >
           <Box sx={{ height: "80%" }}>
             <div style={{ marginTop: "2%" }}>
-              <video src={exhibit?.videoURL} width="95%" controls></video>
+              <iframe src={exhibit?.videoURL} width="95%"></iframe>
             </div>
             <Box mx={2}>
               <Typography variant="body2" color={"black"} textAlign={"justify"}>
@@ -159,23 +143,10 @@ const ExhibitCardDetails: FC<any> = (): ReactElement => {
                     5 Questions
                   </InputLabel>
                 </div>
-                {/* <div style={{ display: "flex", color: "#999999" }}>
-                  <AccessTimeRoundedIcon fontSize="small" />
-                  <InputLabel sx={{ fontSize: "14px !important" }}>
-                    15 mins
-                  </InputLabel>
-                </div> */}
               </div>
             </Box>
           </Box>
           <Box mt={4} mb={2} display={"flex"} justifyContent={"space-around"}>
-            {/* <Button
-              sx={{ color: "#67C8D1", border: "1px solid #67C8D1" }}
-              variant="outlined"
-              onClick={navigateBack}
-            >
-              Back
-            </Button> */}
             {state?.visited ? (
               <Button
                 sx={{ color: "#67C8D1", border: "1px solid #67C8D1" }}
@@ -222,11 +193,7 @@ const ExhibitCardDetails: FC<any> = (): ReactElement => {
           </Box>
         </Box>
       </SwipeableDrawer>
-      <Backdrop
-        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
-        open={loading}>
-        <CircularProgress color="inherit" />
-      </Backdrop>
+      <LoadingController loading={loading}/>
     </Box>
   );
 };

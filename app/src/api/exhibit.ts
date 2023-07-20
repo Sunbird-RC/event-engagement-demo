@@ -10,15 +10,15 @@ interface ExhibitsResponse {
 }
 
 export const useExhibitsData = () => {
-  return useQuery(
-    ["exhibits"],
-    // () => Promise.resolve({ data: [], count: 0 } as ExhibitsResponse),
-    // replace with actual request below
-    () =>
+  const { keycloak } = useKeycloak();
+  return useQuery({
+    queryKey: ["exhibits"],
+    enabled: keycloak.authenticated,
+    queryFn: () => 
       axiosInst
         .get<ExhibitsResponse>(apiRoutes.EXHIBITS)
         .then((res) => {console.log('response ', res); return res.data})
-  );
+    });
 };
 
 export const useExhibitsDataOnId = (exhibitId: string) => {
@@ -40,6 +40,6 @@ export const useExhibitsQrcode = (qrId: string) => {
     queryFn: () =>
       axiosInst
         .put<any>(`${apiRoutes.EXHIBIT_QRSCAN}/${qrId}`)
-        .then((res) => {console.log('qr scan res ', res); return res})
+        .then((res) => {console.log('qr scan res ', res); return res.data})
   });
 }

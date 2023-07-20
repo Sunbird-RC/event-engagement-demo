@@ -14,9 +14,19 @@ import { useNavigate } from "react-router-dom";
 import footer from "../assets/footer.svg";
 import logo from "../assets/logo.svg";
 import { pageRoutes } from "../routes";
+import { useKeycloak } from "@react-keycloak/web";
 
 const HomePage: FC<{}> = (): ReactElement => {
   const navigate = useNavigate();
+  const { keycloak } = useKeycloak();
+
+  const handleNavigate = () => {
+    if (keycloak.authenticated) {
+      navigate(pageRoutes.EXHIBITS_HOME);
+    } else {
+      navigate(pageRoutes.REGISTER)
+    }
+  }
 
   return (
     <Box
@@ -78,7 +88,7 @@ const HomePage: FC<{}> = (): ReactElement => {
         <img src={footer} style={{ position: "relative" }} />
         <Button
           variant="contained"
-          onClick={() => navigate(pageRoutes.REGISTER)}
+          onClick={handleNavigate}
           sx={{
             background: "white",
             position: "absolute",

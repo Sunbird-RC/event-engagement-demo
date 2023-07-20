@@ -1,6 +1,7 @@
 import BookmarkRoundedIcon from "@mui/icons-material/BookmarkRounded";
 import MuseumOutlinedIcon from "@mui/icons-material/MuseumOutlined";
 import {
+  Box,
   Card,
   CardContent,
   InputLabel,
@@ -44,7 +45,7 @@ const TabContents: React.FC<TabContentProps> = (props) => {
               }}
             >
               <CardContent sx={{ padding: "0 10px 0 10px !important" }}>
-                <div
+                <Box mx={2}
                   style={{
                     display: "flex",
                     alignItems: "center",
@@ -54,7 +55,7 @@ const TabContents: React.FC<TabContentProps> = (props) => {
                   {exhibit.logoURL ? (
                     <img src={exhibit.logoURL} />
                   ) : (
-                    <MuseumOutlinedIcon color={"disabled"} />
+                    visited ? (<MuseumOutlinedIcon color={"disabled"} />) : <></>
                   )}
                   <Typography
                     ml={2}
@@ -64,7 +65,7 @@ const TabContents: React.FC<TabContentProps> = (props) => {
                   >
                     {exhibit.name}
                   </Typography>
-                </div>
+                </Box>
                 <div>
                   <InputLabel>Kiosk Number: {exhibit?.osid}</InputLabel>
                   <InputLabel>

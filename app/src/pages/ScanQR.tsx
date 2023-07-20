@@ -7,6 +7,29 @@ import { pageRoutes } from "../routes";
 
 const ScanQR: React.FC<{}> = () => {
   const navigate = useNavigate();
+  // const [text, setData] = useState('');
+  // useEffect(() => {
+  //   console.log('res', text);
+  //   const { data } = useExhibitsQrcode(text);
+  //   console.log('after scan ', data)
+  //   if (data.message == 'SUCCESSFUL') {
+  //     navigate(pageRoutes.EXHIBITS_HOME)
+  //   } else {
+  //     console.log('error')
+  //   }
+  // })
+  // function scanQrCode(decodeText: string) {
+  //   console.log('before scan ', decodeText)
+  //   setDecodeText(useExhibitsQrcode(decodeText))
+  //   console.log('after scan ', data)
+  //   if (data.message == 'SUCCESSFUL') {
+  //     navigate(pageRoutes.EXHIBITS_HOME)
+  //   } else {
+  //     console.log('error')
+  //   }
+  // }
+  // const { data } = useExhibitsQrcode(decodeText);
+
   return (
     <Box>
       <ToolBar
@@ -25,7 +48,6 @@ const ScanQR: React.FC<{}> = () => {
                 const { data } = useExhibitsQrcode(decodedText);
               } else if(/\https+\:\/\//g.test(decodedText) && decodedText.includes('did:upai:badge:presentation')) {
                 navigate(pageRoutes.VERIFIED_BADGES)
-                // window.open(decodedText)
               } else {
                 console.log(`Qr code doesn't match`)
               }

@@ -105,7 +105,7 @@ const ExhibitResult: FC<any> = (): ReactElement => {
     let label = row.label;
     switch (label) {
       case "Play Again":
-        navigate(`${pageRoutes.EXHIBIT_DETAILS}/${content.exhibit.osid}`, {state: content.exhibit})
+        navigate(`${pageRoutes.EXHIBIT_DETAILS}/${content.exhibit.osid}`, {state: {data: content.exhibit, visited: true}})
         break;
       case "Review Answer":
         break;
@@ -268,14 +268,14 @@ const ExhibitResult: FC<any> = (): ReactElement => {
                 <div>
                   <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
                     <CircleIcon sx={{ color: "green" }} />
-                    <InputLabel>{badgeDet?.results?.score}</InputLabel>
+                    <InputLabel sx={{marginLeft: '20%'}}>{badgeDet?.results?.score}</InputLabel>
                   </div>
                   <InputLabel>Correct</InputLabel>
                 </div>
                 <div>
                   <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
                     <CircleIcon sx={{ color: "red" }} />
-                    <InputLabel>{badgeDet.results.totalScore - badgeDet.results.score}</InputLabel>
+                    <InputLabel sx={{marginLeft: '20%'}}>{badgeDet.results.totalScore - badgeDet.results.score}</InputLabel>
                   </div>
                   <InputLabel>Wrong</InputLabel>
                 </div>

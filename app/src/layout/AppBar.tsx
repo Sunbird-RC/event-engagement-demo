@@ -70,7 +70,9 @@ function ToolBar(props: ToolbarProps) {
         navigate(path);
         break;
       case "Logout":
-        keycloak.logout();
+        keycloak.logout().then(() => {
+          navigate(pageRoutes.REGISTER);
+        });
         break;
     }
   };

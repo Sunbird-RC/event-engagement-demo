@@ -6,6 +6,10 @@ import TabContents from "../layout/ExhibitsTable";
 import ExhibitCenter from '../assets/ExhibitCenter.svg';
 import Agenda from '../assets/Agenda.jpeg';
 import emptyList from '../assets/emptyList.svg'
+import { useNavigate } from "react-router-dom";
+import { pageRoutes } from "../routes";
+import { useKeycloak } from "@react-keycloak/web";
+
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -14,6 +18,11 @@ interface TabPanelProps {
 }
 
 const ExhibitsHome: FC<any> = (): ReactElement => {
+  const navigate = useNavigate();
+  const { keycloak } = useKeycloak();
+  if (!keycloak.authenticated) {
+    navigate(pageRoutes.REGISTER)
+  }
   const [tabIndex, setTabIndex] = useState(0);
   const { data, isLoading } = useExhibitsData();
 

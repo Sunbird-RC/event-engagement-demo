@@ -14,9 +14,19 @@ import { useNavigate } from "react-router-dom";
 import footer from "../assets/footer.svg";
 import logo from "../assets/logo.svg";
 import { pageRoutes } from "../routes";
+import { useKeycloak } from "@react-keycloak/web";
 
 const HomePage: FC<{}> = (): ReactElement => {
   const navigate = useNavigate();
+  const { keycloak } = useKeycloak();
+
+  const handleNavigate = () => {
+    if (keycloak.authenticated) {
+      navigate(pageRoutes.EXHIBITS_HOME);
+    } else {
+      navigate(pageRoutes.REGISTER)
+    }
+  }
 
   return (
     <Box
@@ -48,11 +58,11 @@ const HomePage: FC<{}> = (): ReactElement => {
         </Typography>
         <Box sx={{ display: "flex", justifyContent: "center" }}>
           <Box width={"80%"}>
-            <Typography color="white" variant="body1" mt={6} mb={6}>
+            <Typography color="white" variant="body1" mt={'16%'} mb={'4%'}>
               Up@ AI ANUBHAV App will help you immerse in the exhibition while
               Showcasing the Power of Credentialing.
             </Typography>
-            <List sx={{ width: "100%", m: "4", alignItems: "center" }}>
+            <List sx={{ width: "100%", alignItems: "center" }}>
               {[
                 "Know about the exhibits",
                 "Play Quiz to win Badges",
@@ -78,12 +88,12 @@ const HomePage: FC<{}> = (): ReactElement => {
         <img src={footer} style={{ position: "relative" }} />
         <Button
           variant="contained"
-          onClick={() => navigate(pageRoutes.REGISTER)}
+          onClick={handleNavigate}
           sx={{
             background: "white",
             position: "absolute",
             left: "50%",
-            bottom: "10%",
+            top: "95%",
             transform: "translate(-50%, -50%)",
             color: "primary.main",
           }}

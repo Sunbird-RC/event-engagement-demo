@@ -1,5 +1,4 @@
 import CircleIcon from "@mui/icons-material/Circle";
-import QrCode2RoundedIcon from "@mui/icons-material/QrCode2Rounded";
 import {
   Box,
   Card,
@@ -38,8 +37,10 @@ import playAgain from "../assets/playAgain.svg";
 import share from "../assets/share.svg";
 import ToolBar from "../layout/AppBar";
 import { pageRoutes } from "../routes";
-import qBank from '../layout/Questions';
 import { PDFDocumentProxy } from "pdfjs-dist/types/src/display/api";
+import { QuizResult } from "../types/quiz";
+import { useBadgeData, useQrCode } from "../api/badge";
+import { Badge } from "../types/badge";
 
 const Puller = styled(Box)(({ theme }) => ({
   width: 30,
@@ -54,9 +55,46 @@ const Puller = styled(Box)(({ theme }) => ({
 
 const ExhibitResult: FC<any> = (): ReactElement => {
   let navigate = useNavigate();
-  const { state: content } = useLocation();
-  console.log('state quiz resuktt ', content)
-  const quizResult = content.quizResult
+  const {data} = useQrCode();
+  let qrcode = data;
+  const { state: exhibitCont } = useLocation();
+  console.log('state quiz resuktt ', exhibitCont)
+  let content = exhibitCont
+  const quizResult: QuizResult = content.quizResult
+  const { data: badgeData } = useBadgeData();
+  let badgeDet: Badge = {
+    attemptCount: 0,
+    date: "",
+    did: "",
+    exhibitName: "",
+    exhibitOrganization: "",
+    exhibitOsid: "",
+    osCreatedAt: "",
+    osCreatedBy: "",
+    osOwner: [""],
+    osUpdatedAt: "",
+    osUpdatedBy: "",
+    osid: "",
+    results: {
+      score: 0,
+      totalScore: 0,
+      badgeWon: false
+    },
+    title: "",
+    visitorMobileNumber: "",
+    visitorName: ""
+  }
+
+  console.log('badgedata ', badgeData)
+  if (badgeData && badgeData?.length > 0) {
+    badgeData?.forEach((bgData: Badge) => {
+      console.log('loop data ', bgData)
+      if (bgData.exhibitOsid == content.exhibit.osid) {
+        console.log('if true');
+        badgeDet = bgData
+      }
+    })
+  }
 
   const showMsg = true;
 
@@ -66,7 +104,7 @@ const ExhibitResult: FC<any> = (): ReactElement => {
     let label = row.label;
     switch (label) {
       case "Play Again":
-        navigate(`${pageRoutes.EXHIBIT_DETAILS}/${content.exhibit.did}`, {state: content.exhibit})
+        navigate(`${pageRoutes.EXHIBIT_DETAILS}/${content.exhibit.osid}`, {state: {data: content.exhibit, visited: true}})
         break;
       case "Review Answer":
         break;
@@ -110,12 +148,12 @@ const ExhibitResult: FC<any> = (): ReactElement => {
   const QuestionList = () => {
     return (
       <div style={{width:'100%', textAlign:'start', marginTop:20, marginLeft:10}}>
-        {qBank.map((value, index) => {
+        {content.quizConfig.questions.map((value:any, index: number) => {
           return(
             <div style={{marginTop:20}}>
               <li key={index}>
                 <p>{index+1}. {value.question}</p>
-                {value.options.map((opt, i) => {
+                {value.options.map((opt: string, i: number) => {
                   return(
                     <div style={{marginLeft:20, margin:5, fontSize:14}}>
                       <li key={i+1}>
@@ -150,15 +188,28 @@ const ExhibitResult: FC<any> = (): ReactElement => {
     console.log("share");
   };
 
-  const listRow1 = [
-    { imgpath: playAgain, label: "Play Again" },
-    { imgpath: share, label: "Share Score" },
-    { imgpath: leaderboard, label: "Leader Board" },
-  ];
-  const listRow2 = [
-    // { imgpath: pdf, label: "Generate PDF" },
-    { imgpath: home, label: "Home" },
-  ];
+  let listRow1 = []
+  let listRow2: any[] = []
+  if (quizResult?.badgeWon) {
+    listRow1 = [
+      { imgpath: home, label: "Home" },
+      { imgpath: share, label: "Share Score" },
+      { imgpath: leaderboard, label: "Leader Board" },
+    ]
+    listRow2 = [
+      // { imgpath: pdf, label: "Generate PDF" },
+    ]
+  } else {
+    listRow1 = [
+      { imgpath: playAgain, label: "Play Again" },
+      { imgpath: share, label: "Share Score" },
+      { imgpath: leaderboard, label: "Leader Board" },
+    ]
+    listRow2 = [
+      // { imgpath: pdf, label: "Generate PDF" },
+      { imgpath: home, label: "Home" },
+    ];
+  }
 
   const handleLoadSuccess = (_pdf: PDFDocumentProxy, _blob: Blob | null) => {
 
@@ -203,35 +254,37 @@ const ExhibitResult: FC<any> = (): ReactElement => {
             height: "100%",
           }}
         >
-          {showMsg ? (
-            <>
+          {!showMsg ?
+            (
               <div>
-                <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
-                  <CircleIcon sx={{ color: "green" }} />
-                  <InputLabel>{quizResult.correctCount}</InputLabel>
-                </div>
-                <InputLabel>Correct</InputLabel>
+                <CircleIcon sx={{ color: "red" }} />
+                13
+                <InputLabel>Total Badges Earned</InputLabel>
               </div>
-              <div>
-                <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
-                  <CircleIcon sx={{ color: "red" }} />
-                  <InputLabel>{quizResult.wrongCount}</InputLabel>
+            ) : 
+            (
+              <>
+                <div>
+                  <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
+                    <CircleIcon sx={{ color: "green" }} />
+                    <InputLabel sx={{marginLeft: '20%'}}>{badgeDet?.results?.score}</InputLabel>
+                  </div>
+                  <InputLabel>Correct</InputLabel>
                 </div>
-                <InputLabel>Wrong</InputLabel>
-              </div>
-            </>
-          ) : (
-            <div>
-              <CircleIcon sx={{ color: "red" }} />
-              13
-              <InputLabel>Total Badges Earned</InputLabel>
-            </div>
+                <div>
+                  <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
+                    <CircleIcon sx={{ color: "red" }} />
+                    <InputLabel sx={{marginLeft: '20%'}}>{badgeDet.results.totalScore - badgeDet.results.score}</InputLabel>
+                  </div>
+                  <InputLabel>Wrong</InputLabel>
+                </div>
+              </>
           )}
         </CardContent>
       </Card>
       <Box sx={{ my: 30, mx: 2, color: "primary.dark", width: "100%" }}>
         {showMsg ? (
-          <>
+          quizResult?.badgeWon ? (<>
             <Typography
               variant="h5"
               component="h5"
@@ -250,20 +303,18 @@ const ExhibitResult: FC<any> = (): ReactElement => {
             </Typography>
           </>
         ) : (
-          <></>
-        )}
-        <Box mt={2}>
-          <QrCode2RoundedIcon
-            fontSize="large"
-            sx={{
-              border: "5px solid black",
-              width: "7rem",
-              height: "7rem",
-              color: "black",
-            }}
-          ></QrCode2RoundedIcon>
+          <div>
+            <Typography variant="h5"
+              component="h5"
+              fontWeight={"bold"}
+              color={"#4DD8DD"}>Unfortunately, You did not win a Badge! You can re-attempt the Quiz!</Typography>
+          </div>)
+        ): 
+        (<></>)}
+        <Box mt={2} border={'1px solid black'} mx={8}>
+          <img src={`${qrcode}`} width={'100%'} style={{display:'flex', alignItems:'center'}}/>
         </Box>
-        <Grid mt={6} container spacing={3}>
+        <Grid mt={1} container spacing={3}>
           {listRow1.map((row) => (
             <Grid item xs={4}>
               <IconButton

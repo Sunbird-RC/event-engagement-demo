@@ -16,6 +16,9 @@ import { useSubmitQuiz } from "../api/quiz";
 import ToolBar from "../layout/AppBar";
 import { pageRoutes } from "../routes";
 import ArrowBackOutlinedIcon from "@mui/icons-material/ArrowBackOutlined";
+import { QuizResult } from "../types/quiz";
+import QuizImg from '../assets/QuizImg.svg';
+import LoadingController from "../layout/Loader";
 
 const Puller = styled(Box)(({ theme }) => ({
   width: 48,
@@ -28,7 +31,7 @@ const Puller = styled(Box)(({ theme }) => ({
 const ExhibitCardDetails: FC<any> = (): ReactElement => {
   const { state } = useLocation();
   console.log('props ', state);
-  const entity = state;
+  const entity = state.data;
   const [open, setOpen] = useState(false);
   const toggleDrawer = (newOpen: boolean) => () => {
     setOpen(newOpen);
@@ -39,46 +42,37 @@ const ExhibitCardDetails: FC<any> = (): ReactElement => {
     navigate(-1);
   };
 
-  // const { exhibitId } = useParams();
-  // const exhibit: Exhibit = state;
-  // const { data } = useExhibitsData();
-  // const exhibit: Exhibit = useMemo(() => {
-  //   return (
-  //     data?.visited.find((x) => x.did === exhibitId) ||
-  //     data?.unvisited.find((x) => x.did === exhibitId) ||
-  //     ({} as Exhibit)
-  //   );
-  // }, [exhibitId, data]);
-  const { data } = useExhibitsDataOnId(entity.did);
-  const exhibit = data?.exhibitDetails;
-  const questionsData = data?.quizConfig;
-  console.log('exhibit ', exhibit);
-  console.log('questionsData ', questionsData);
-  // const { data: questionsData } = useQuizQuestions(
-  //   exhibit.did
-  // );
+  const { data } = useExhibitsDataOnId(state.data.osid);
+  let exhibit = data;
+  console.log('data ', data)
+  const questionsData = exhibit?.quizConfig;
 
-  const { mutate: submitQuiz } = useSubmitQuiz("1");
+  const openQrcode = () => {
+    navigate(pageRoutes.SCAN_QR)
+  }
+  const [loading, setLoading] = useState(false);
+  const { mutate: submitQuiz } = useSubmitQuiz(state.data.osid);
 
   const handleFinishQuiz = (data: any) => {
+    setLoading(!loading);
+    console.log('data on click ', data);
     const answers = questionsData?.questions.map((question, index) => {
       return {
-        question: question.question,
+        questionOsid: question.osid,
         answer: data[index],
       };
     });
-    console.log('handle finish quiz')
+    console.log('handle finish quiz ', data, 'data')
     submitQuiz(answers, {
-      onSuccess: (data) => {
-        console.log('id ', entity);
-        console.log('data ', data);
+      onSuccess: (data: QuizResult) => {
+        setLoading(!loading);
         navigate(pageRoutes.EXHIBIT_RESULT, {
           state: {
             quizResult: data,
             exhibit: entity
           },
         });
-      },
+      }
     });
     toggleDrawer(false)();
   };
@@ -115,7 +109,7 @@ const ExhibitCardDetails: FC<any> = (): ReactElement => {
         >
           <Box sx={{ height: "80%" }}>
             <div style={{ marginTop: "2%" }}>
-              <video src={exhibit?.videoURL} width="95%" controls></video>
+              <iframe src={exhibit?.videoURL} width="95%"></iframe>
             </div>
             <Box mx={2}>
               <Typography variant="body2" color={"black"} textAlign={"justify"}>
@@ -134,7 +128,7 @@ const ExhibitCardDetails: FC<any> = (): ReactElement => {
                 transform: "translate(25%, 0%)",
               }}
             >
-              <img src={exhibit?.logoURL} width={60} height={60}></img>
+              <img src={QuizImg} width={60} height={60}></img>
               <div style={{ margin: "1rem" }}>
                 <Typography
                   variant="body2"
@@ -149,24 +143,11 @@ const ExhibitCardDetails: FC<any> = (): ReactElement => {
                     5 Questions
                   </InputLabel>
                 </div>
-                {/* <div style={{ display: "flex", color: "#999999" }}>
-                  <AccessTimeRoundedIcon fontSize="small" />
-                  <InputLabel sx={{ fontSize: "14px !important" }}>
-                    15 mins
-                  </InputLabel>
-                </div> */}
               </div>
             </Box>
           </Box>
           <Box mt={4} mb={2} display={"flex"} justifyContent={"space-around"}>
-            {/* <Button
-              sx={{ color: "#67C8D1", border: "1px solid #67C8D1" }}
-              variant="outlined"
-              onClick={navigateBack}
-            >
-              Back
-            </Button> */}
-            {state?.additionalProp1?.visited ? (
+            {state?.visited ? (
               <Button
                 sx={{ color: "#67C8D1", border: "1px solid #67C8D1" }}
                 variant="outlined"
@@ -178,7 +159,7 @@ const ExhibitCardDetails: FC<any> = (): ReactElement => {
               <Button
                 sx={{ color: "#67C8D1", border: "1px solid #67C8D1" }}
                 variant="outlined"
-                onClick={toggleDrawer(true)}
+                onClick={() => openQrcode()}
               >
                 Scan QR
               </Button>
@@ -212,6 +193,7 @@ const ExhibitCardDetails: FC<any> = (): ReactElement => {
           </Box>
         </Box>
       </SwipeableDrawer>
+      <LoadingController loading={loading}/>
     </Box>
   );
 };

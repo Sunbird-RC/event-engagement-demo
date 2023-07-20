@@ -12,7 +12,11 @@ const queryClient = new QueryClient();
 
 function App() {
   return (
-    <ReactKeycloakProvider authClient={keycloak}>
+    <ReactKeycloakProvider authClient={keycloak}
+      initOptions={{
+        checkLoginIframe: false,
+      }}
+      >
       <Interceptor />
       <QueryClientProvider client={queryClient}>
         <ThemeProvider theme={theme}>

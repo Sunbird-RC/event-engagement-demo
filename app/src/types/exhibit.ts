@@ -1,60 +1,80 @@
 export interface Exhibit {
+  boothNumber: string,
   did: string,
-  name: string,
   shortDescription: string,
   fullDescription: string,
-  logoURL: string,
+  logoURL:string,
   videoURL: string,
-  boothNumber: string,
-  startDate: string,
-  endDate: string,
-  organization: string,
-  qrId: string,
+  name:string,
+  organization:string,
+  osCreatedAt: string,
+  osCreatedBy:string,
+  osOwner:[string],
+  osUpdatedAt:string,
+  osUpdatedBy:string, 
+  osid:string, 
+  qrId:string, 
   quizConfig: {
     title: string,
     description: string,
+    osCreatedAt : string,
+    osCreatedBy : string,
+    osUpdatedAt : string,
+    osUpdatedBy : string,
+    osid : string,
     questions: [
       {
         question: string,
         correctAnswer: string,
         options: [
           string
-        ]
+        ],
+        osCreatedAt: string
+        osCreatedBy: string
+        osUpdatedAt: string
+        osUpdatedBy: string
+        osid: string
       }
     ]
-  },
-  additionalProp1: {
-    visited: boolean
   }
 }
 
 export interface ExhibitDetailsResponse {
-  exhibitDetails: {
-    name: string,
-    mobileNumber: string,
-    shortDescription: string,
-    fullDescription: string,
-    logoURL: string,
-    videoURL: string,
-    boothNumber: string,
-    startDate: string,
-    endDate: string,
-    organization: string,
-    qrId: string
-  },
+  boothNumber: string,
+  did: string,
+  shortDescription: string,
+  fullDescription: string,
+  logoURL:string,
+  videoURL: string,
+  name:string,
+  organization:string,
+  osCreatedAt: string,
+  osCreatedBy:string,
+  osOwner:[string],
+  osUpdatedAt:string,
+  osUpdatedBy:string, 
+  osid:string, 
+  qrId:string, 
   quizConfig: {
     title: string,
     description: string,
-    noOfQuestionPerQuiz: 5,
-    thresholdLimit: 4,
+    osCreatedAt : string,
+    osCreatedBy : string,
+    osUpdatedAt : string,
+    osUpdatedBy : string,
+    osid : string,
     questions: [
       {
-        osid: string,
         question: string,
         correctAnswer: string,
         options: [
           string
-        ]
+        ],
+        osCreatedAt: string
+        osCreatedBy: string
+        osUpdatedAt: string
+        osUpdatedBy: string
+        osid: string
       }
     ]
   }

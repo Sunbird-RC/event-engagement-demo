@@ -1,15 +1,10 @@
 import { useMutation, useQuery } from "react-query";
 import { apiRoutes } from "../routes";
-import { Question } from "../types/quiz";
+import { Question, QuizResult } from "../types/quiz";
 import { axiosInst } from "./axios";
 
 interface QuizQuestionsResponse {
   questions: Question[];
-}
-
-interface QuizResult {
-  correctCount: number;
-  wrongCount: number;
 }
 
 export const useQuizQuestions = (exhibitId: string) => {
@@ -22,16 +17,15 @@ export const useQuizQuestions = (exhibitId: string) => {
   });
 };
 
-export const useSubmitQuiz = (exhibitId: string) => {
+export const useSubmitQuiz = (osid: any) => {
   return useMutation({
-    mutationKey: ["quiz-submit", exhibitId],
+    mutationKey: ["quiz-submit", osid],
     mutationFn: (quizData: any) =>
       axiosInst
-        .post<QuizResult>(apiRoutes.QUIZ_SUBMIT, {
-          exhibitId,
-          quiz: quizData,
+        .post<QuizResult>(`${apiRoutes.QUIZ_SUBMIT}/${osid}`, 
+        {
+          "answers": quizData
         })
-        .then((res) => res.data)
-        .catch(() => ({ correctCount: 1, wrongCount: 4 })),
+        .then((res) => {console.log('on quiz submit ', res); return res.data})
   });
 };

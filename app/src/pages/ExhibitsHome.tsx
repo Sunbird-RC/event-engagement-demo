@@ -5,6 +5,7 @@ import ToolBar from "../layout/AppBar";
 import TabContents from "../layout/ExhibitsTable";
 import ExhibitCenter from '../assets/ExhibitCenter.svg';
 import Agenda from '../assets/Agenda.jpeg';
+import emptyList from '../assets/emptyList.svg'
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -91,7 +92,21 @@ const ExhibitsHome: FC<any> = (): ReactElement => {
             // "Loading ..."
             <img src={ExhibitCenter} style={{marginTop: '10%'}}/>
           ) : (
-            <TabContents content={visitedList} visited={true}></TabContents>
+            visitedList.length > 0 ? (
+              <TabContents content={visitedList} visited={true}></TabContents>
+            ) : (
+              <Box my={6}>
+              <Typography variant="h5"
+                component="h5"
+                fontWeight={"bold"}
+                color={"#4DD8DD"}>Whoops!</Typography>
+              <img src={emptyList}/>
+              <Typography variant="h5" mt={2}
+                component="h5"
+                fontWeight={"bold"}
+                color={"#4DD8DD"}>Look’s like you haven’t visited Exhibits Please Visit the Exhibits</Typography>
+              </Box>
+            )
           )}
         </CustomTabPanel>
         <CustomTabPanel value={tabIndex} index={2}>

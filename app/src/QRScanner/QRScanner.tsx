@@ -31,7 +31,7 @@ const QRScanner: React.FC<QRScannerProps> = ({ onScan, onError }) => {
             const side = Math.min(viewFinderHeight, viewFinderWidth);
             const final = {
               width: Math.max(Math.floor(0.75 * side), 50),
-              height: Math.max(Math.floor(0.75 * side), 50),
+              height: Math.max(Math.floor(0.75 * side), 100),
             };
             return final;
           },

@@ -22,12 +22,11 @@ const TabContents: React.FC<TabContentProps> = (props) => {
   const navigate = useNavigate();
 
   function navigateToDetails(data: Exhibit) {
-    data.additionalProp1.visited = visited
     const path = pageRoutes.EXHIBIT_DETAILS;
-    navigate(`${path}/${data.did}`, {state: data});
+    navigate(`${path}/${data.osid}`, {state: {data: data, visited: visited}});
   }
   return (
-    <List>
+    <List sx={{margin: 1}}>
       {content.map((exhibit, index) => {
         return (
           <ListItem
@@ -67,8 +66,7 @@ const TabContents: React.FC<TabContentProps> = (props) => {
                   </Typography>
                 </div>
                 <div>
-                  <InputLabel>Kiosk Number: </InputLabel>
-                  {/* <InputLabel>Time: {new Date(`${exhibit.startDate}`).toLocaleTimeString()} </InputLabel> */}
+                  <InputLabel>Kiosk Number: {exhibit?.osid}</InputLabel>
                   <InputLabel>
                     Description:{" "}
                     {exhibit.shortDescription || exhibit.fullDescription}

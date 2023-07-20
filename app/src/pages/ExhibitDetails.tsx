@@ -1,7 +1,9 @@
 import ArticleRoundedIcon from "@mui/icons-material/ArticleRounded";
 import {
+  Backdrop,
   Box,
   Button,
+  CircularProgress,
   InputLabel,
   SwipeableDrawer,
   Typography,
@@ -11,11 +13,14 @@ import { grey } from "@mui/material/colors";
 import { FC, ReactElement, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import Quiz from "../Quiz/Quiz";
-import { useExhibitsDataOnId } from "../api/exhibit";
+import { useExhibitsDataOnId, useExhibitsQrcode } from "../api/exhibit";
 import { useSubmitQuiz } from "../api/quiz";
 import ToolBar from "../layout/AppBar";
 import { pageRoutes } from "../routes";
 import ArrowBackOutlinedIcon from "@mui/icons-material/ArrowBackOutlined";
+import { QuizResult } from "../types/quiz";
+import { Exhibit } from "../types/exhibit";
+// import QuizImg from '../assets/QuizImg.svg';
 
 const Puller = styled(Box)(({ theme }) => ({
   width: 48,
@@ -28,7 +33,7 @@ const Puller = styled(Box)(({ theme }) => ({
 const ExhibitCardDetails: FC<any> = (): ReactElement => {
   const { state } = useLocation();
   console.log('props ', state);
-  const entity = state;
+  const entity = state.data;
   const [open, setOpen] = useState(false);
   const toggleDrawer = (newOpen: boolean) => () => {
     setOpen(newOpen);
@@ -49,36 +54,41 @@ const ExhibitCardDetails: FC<any> = (): ReactElement => {
   //     ({} as Exhibit)
   //   );
   // }, [exhibitId, data]);
-  const { data } = useExhibitsDataOnId(entity.did);
-  const exhibit = data?.exhibitDetails;
-  const questionsData = data?.quizConfig;
-  console.log('exhibit ', exhibit);
-  console.log('questionsData ', questionsData);
+  const { data } = useExhibitsDataOnId(entity.osid);
+  const exhibit: Exhibit = data;
+  const questionsData = exhibit.quizConfig;
+
+  const openQrcode = (qrId: any) => {
+    console.log('data on qr scan ', qrId);
+    // const { data } = useExhibitsQrcode(qrId);
+    navigate(pageRoutes.SCAN_QR)
+  }
   // const { data: questionsData } = useQuizQuestions(
   //   exhibit.did
   // );
-
-  const { mutate: submitQuiz } = useSubmitQuiz("1");
+  const [loading, setLoading] = useState(false);
+  const { mutate: submitQuiz } = useSubmitQuiz(exhibit?.osid);
 
   const handleFinishQuiz = (data: any) => {
+    setLoading(!loading);
+    console.log('data on click ', data);
     const answers = questionsData?.questions.map((question, index) => {
       return {
-        question: question.question,
+        questionOsid: question.osid,
         answer: data[index],
       };
     });
-    console.log('handle finish quiz')
+    console.log('handle finish quiz ', data, 'data')
     submitQuiz(answers, {
-      onSuccess: (data) => {
-        console.log('id ', entity);
-        console.log('data ', data);
+      onSuccess: (data: QuizResult) => {
+        setLoading(!loading);
         navigate(pageRoutes.EXHIBIT_RESULT, {
           state: {
             quizResult: data,
             exhibit: entity
           },
         });
-      },
+      }
     });
     toggleDrawer(false)();
   };
@@ -134,7 +144,7 @@ const ExhibitCardDetails: FC<any> = (): ReactElement => {
                 transform: "translate(25%, 0%)",
               }}
             >
-              <img src={exhibit?.logoURL} width={60} height={60}></img>
+              {/* <img src={QuizImg} width={60} height={60}></img> */}
               <div style={{ margin: "1rem" }}>
                 <Typography
                   variant="body2"
@@ -166,7 +176,7 @@ const ExhibitCardDetails: FC<any> = (): ReactElement => {
             >
               Back
             </Button> */}
-            {state?.additionalProp1?.visited ? (
+            {state?.visited ? (
               <Button
                 sx={{ color: "#67C8D1", border: "1px solid #67C8D1" }}
                 variant="outlined"
@@ -178,7 +188,7 @@ const ExhibitCardDetails: FC<any> = (): ReactElement => {
               <Button
                 sx={{ color: "#67C8D1", border: "1px solid #67C8D1" }}
                 variant="outlined"
-                onClick={toggleDrawer(true)}
+                onClick={() => openQrcode(exhibit?.qrId)}
               >
                 Scan QR
               </Button>
@@ -212,6 +222,11 @@ const ExhibitCardDetails: FC<any> = (): ReactElement => {
           </Box>
         </Box>
       </SwipeableDrawer>
+      <Backdrop
+        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        open={loading}>
+        <CircularProgress color="inherit" />
+      </Backdrop>
     </Box>
   );
 };

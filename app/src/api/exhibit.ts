@@ -16,7 +16,7 @@ export const useExhibitsData = () => {
     () =>
       axiosInst
         .get<ExhibitsResponse>(apiRoutes.EXHIBITS)
-        .then((res) => {console.log('response ', res); return res.data}),
+        .then((res) => {console.log('response ', res); return res.data})
   );
 };
 
@@ -25,7 +25,17 @@ export const useExhibitsDataOnId = (exhibitId: string) => {
     ["exhibitsDet", exhibitId],
     () =>
       axiosInst
-        .get<ExhibitDetailsResponse>(apiRoutes.EXHIBITS_DET)
-        .then((res) => res.data),
+        .get<ExhibitDetailsResponse>(`${apiRoutes.EXHIBITS_DET}${exhibitId}`)
+        .then((res) => res.data)
+  );
+}
+
+export const useExhibitsQrcode = (qrId: string) => {
+  return useQuery(
+    ["exhibitsQR", qrId],
+    () =>
+      axiosInst
+        .put<any>(`${apiRoutes.EXHIBIT_QRSCAN}${qrId}`)
+        .then((res) => {console.log('qr scan res ', res); return res})
   );
 }

@@ -1,5 +1,4 @@
 import CircleIcon from "@mui/icons-material/Circle";
-import QrCode2RoundedIcon from "@mui/icons-material/QrCode2Rounded";
 import {
   Box,
   Card,

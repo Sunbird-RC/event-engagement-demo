@@ -13,14 +13,11 @@ import {
 import { useKeycloak } from "@react-keycloak/web";
 import { FC, ReactElement } from "react";
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
 import AnubhavLogo from "../assets/anubhavLogo.svg";
 import footer from "../assets/footer.svg";
-import { pageRoutes } from "../routes";
 import { useVistorRegister } from "../api/visitors";
 
 const Register: FC<{}> = (): ReactElement => {
-  let navigate = useNavigate();
   const { keycloak } = useKeycloak();
   const { register, handleSubmit } = useForm();
   const { mutate: registerVisitor } = useVistorRegister();

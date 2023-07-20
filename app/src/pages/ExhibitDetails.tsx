@@ -47,7 +47,7 @@ const ExhibitCardDetails: FC<any> = (): ReactElement => {
   console.log('data ', data)
   const questionsData = exhibit?.quizConfig;
 
-  const openQrcode = (qrId: any) => {
+  const openQrcode = () => {
     navigate(pageRoutes.SCAN_QR)
   }
   const [loading, setLoading] = useState(false);
@@ -159,7 +159,7 @@ const ExhibitCardDetails: FC<any> = (): ReactElement => {
               <Button
                 sx={{ color: "#67C8D1", border: "1px solid #67C8D1" }}
                 variant="outlined"
-                onClick={() => openQrcode(exhibit?.qrId)}
+                onClick={() => openQrcode()}
               >
                 Scan QR
               </Button>

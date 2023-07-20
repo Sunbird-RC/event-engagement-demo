@@ -31,7 +31,7 @@ const createOrUpdate = async (exhibit, visitor, results) => {
     let url = `${serviceUrl}`;
     let method = 'post';
     if (quizExists) {
-        url = `${serviceUrl}/${quizOsid}`;
+        url = `${serviceUrl}/${quiz?.osid}`;
         method = 'put';
     }
     await axios.request({

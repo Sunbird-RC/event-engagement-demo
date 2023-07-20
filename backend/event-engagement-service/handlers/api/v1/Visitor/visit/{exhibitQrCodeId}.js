@@ -7,15 +7,21 @@ const { markExhibitAsVisited } = require('../../../../../services/visitorService
 module.exports = {
     put: async function (req, res, next) {
         const exhibitQrCodeId = req?.params?.exhibitQrCodeId;
-        const visitor = await getCurrentUser(req);
-        markExhibitAsVisited(exhibitQrCodeId, visitor, req.headers)
-        .then(() => {
-            res.send({
-                message: "SUCCESSFUL"
-            });
+        getCurrentUser(req)
+        .then(visitor => {
+            markExhibitAsVisited(exhibitQrCodeId, visitor, req.headers)
+            .then(() => {
+                res.send({
+                    message: "SUCCESSFUL"
+                });
+            })
+            .catch((err) => {
+                next(err, req, res, next);
+            })
         })
         .catch((err) => {
             next(err, req, res, next);
-        })
+        });
+        
     }
 };

@@ -6,13 +6,21 @@ const { getCurrentUser } = require('../../../services/utils.js');
  */
 module.exports = {
     get: async function (req, res, next) {
-        const visitor = await getCurrentUser(req);
-        getQrCodeForVisitor(visitor, (err, url) => {
-            if(err) {
+        getCurrentUser(req)
+        .then(visitor => {
+            getQrCodeForVisitor(visitor, (err, url) => {
+                if(err) {
+                    next(err, req, res, next);
+                } else {
+                    res.status(200).send(url);
+                }
+            }).catch(err => {
                 next(err, req, res, next);
-            } else {
-                res.status(200).send(url);
-            }
+            });
+        })
+        .catch((err) => {
+            next(err)
         });
+        
     }
 };

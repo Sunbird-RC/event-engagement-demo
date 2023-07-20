@@ -40,23 +40,21 @@ export interface Exhibit {
 }
 
 export interface ExhibitDetailsResponse {
-  name: string,
-  osCreatedBy: string,
-  did: string
   boothNumber: string,
-  osUpdatedAt: string,
-  osUpdatedBy: string,
-  qrId: string,
-  osid: string,
+  did: string,
   shortDescription: string,
   fullDescription: string,
-  osOwner: [
-      string
-  ],
-  logoURL: string,
+  logoURL:string,
   videoURL: string,
+  name:string,
+  organization:string,
   osCreatedAt: string,
-  organization: string,
+  osCreatedBy:string,
+  osOwner:[string],
+  osUpdatedAt:string,
+  osUpdatedBy:string, 
+  osid:string, 
+  qrId:string, 
   quizConfig: {
     title: string,
     description: string,

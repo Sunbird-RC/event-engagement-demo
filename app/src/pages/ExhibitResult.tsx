@@ -38,9 +38,10 @@ import playAgain from "../assets/playAgain.svg";
 import share from "../assets/share.svg";
 import ToolBar from "../layout/AppBar";
 import { pageRoutes } from "../routes";
-// import qBank from '../layout/Questions';
 import { PDFDocumentProxy } from "pdfjs-dist/types/src/display/api";
 import { QuizResult } from "../types/quiz";
+import { useBadgeData, useQrCode } from "../api/badge";
+import { Badge } from "../types/badge";
 
 const Puller = styled(Box)(({ theme }) => ({
   width: 30,
@@ -55,9 +56,46 @@ const Puller = styled(Box)(({ theme }) => ({
 
 const ExhibitResult: FC<any> = (): ReactElement => {
   let navigate = useNavigate();
-  const { state: content } = useLocation();
-  console.log('state quiz resuktt ', content)
+  const {data} = useQrCode();
+  let qrcode = data;
+  const { state: exhibitCont } = useLocation();
+  console.log('state quiz resuktt ', exhibitCont)
+  let content = exhibitCont
   const quizResult: QuizResult = content.quizResult
+  const { data: badgeData } = useBadgeData();
+  let badgeDet: Badge = {
+    attemptCount: 0,
+    date: "",
+    did: "",
+    exhibitName: "",
+    exhibitOrganization: "",
+    exhibitOsid: "",
+    osCreatedAt: "",
+    osCreatedBy: "",
+    osOwner: [""],
+    osUpdatedAt: "",
+    osUpdatedBy: "",
+    osid: "",
+    results: {
+      score: 0,
+      totalScore: 0,
+      badgeWon: false
+    },
+    title: "",
+    visitorMobileNumber: "",
+    visitorName: ""
+  }
+
+  console.log('badgedata ', badgeData)
+  if (badgeData && badgeData?.length > 0) {
+    badgeData?.forEach((bgData: Badge) => {
+      console.log('loop data ', bgData)
+      if (bgData.exhibitOsid == content.exhibit.osid) {
+        console.log('if true');
+        badgeDet = bgData
+      }
+    })
+  }
 
   const showMsg = true;
 
@@ -111,7 +149,7 @@ const ExhibitResult: FC<any> = (): ReactElement => {
   const QuestionList = () => {
     return (
       <div style={{width:'100%', textAlign:'start', marginTop:20, marginLeft:10}}>
-        {content.quizConfig.questions.map((value:string, index: number) => {
+        {content.quizConfig.questions.map((value:any, index: number) => {
           return(
             <div style={{marginTop:20}}>
               <li key={index}>
@@ -226,25 +264,22 @@ const ExhibitResult: FC<any> = (): ReactElement => {
               </div>
             ) : 
             (
-              quizResult?.badgeWon ? 
-              (<>
+              <>
                 <div>
                   <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
                     <CircleIcon sx={{ color: "green" }} />
-                    {/* <InputLabel>{quizResult.correctCount}</InputLabel> */}
+                    <InputLabel>{badgeDet?.results?.score}</InputLabel>
                   </div>
                   <InputLabel>Correct</InputLabel>
                 </div>
                 <div>
                   <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
                     <CircleIcon sx={{ color: "red" }} />
-                    {/* <InputLabel>{quizResult.wrongCount}</InputLabel> */}
+                    <InputLabel>{badgeDet.results.totalScore - badgeDet.results.score}</InputLabel>
                   </div>
                   <InputLabel>Wrong</InputLabel>
                 </div>
-              </>):
-              (<>
-              </>)
+              </>
           )}
         </CardContent>
       </Card>
@@ -277,18 +312,10 @@ const ExhibitResult: FC<any> = (): ReactElement => {
           </div>)
         ): 
         (<></>)}
-        <Box mt={2}>
-          <QrCode2RoundedIcon
-            fontSize="large"
-            sx={{
-              border: "5px solid black",
-              width: "7rem",
-              height: "7rem",
-              color: "black",
-            }}
-          ></QrCode2RoundedIcon>
+        <Box mt={2} border={'1px solid black'} mx={8}>
+          <img src={`${qrcode}`} width={'100%'} style={{display:'flex', alignItems:'center'}}/>
         </Box>
-        <Grid mt={6} container spacing={3}>
+        <Grid mt={1} container spacing={3}>
           {listRow1.map((row) => (
             <Grid item xs={4}>
               <IconButton

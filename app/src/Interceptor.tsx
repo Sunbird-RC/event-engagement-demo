@@ -18,6 +18,8 @@ const Interceptor: React.FC<{}> = () => {
         },
         (err) => Promise.reject(err),
       );
+    } else {
+      console.log('expired')
     }
     return () => {
       if (interceptorId) {

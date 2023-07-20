@@ -62,10 +62,9 @@ const Register: FC<{}> = (): ReactElement => {
         textAlign: "center",
       }}
     >
-      <Box sx={{ width: "100%" }}>
+      <Box mx={2} sx={{ width: "100%" }}>
         <img src={AnubhavLogo} />
-        <Typography
-          sx={{ margin: "25% 10% 0 10% !important" }}
+        <Typography my={6}
           gutterBottom
           variant="subtitle1"
           component="div"
@@ -122,24 +121,6 @@ const Register: FC<{}> = (): ReactElement => {
           </div>
           <div className="inputFields">
             <TextField
-              id="email"
-              type="email"
-              label=""
-              placeholder="Enter you email"
-              {...register("email")}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <MailOutlineIcon />
-                  </InputAdornment>
-                ),
-              }}
-              variant="outlined"
-              sx={{ width: "90%", background: "white", borderRadius: "10px" }}
-            />
-          </div>
-          <div className="inputFields">
-            <TextField
               required
               id="organisation"
               label=""
@@ -156,6 +137,24 @@ const Register: FC<{}> = (): ReactElement => {
               sx={{ width: "90%", background: "white", borderRadius: "10px" }}
             />
           </div>
+          <div className="inputFields">
+            <TextField
+              id="email"
+              type="email"
+              label=""
+              placeholder="Enter you email"
+              {...register("email")}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <MailOutlineIcon />
+                  </InputAdornment>
+                ),
+              }}
+              variant="outlined"
+              sx={{ width: "90%", background: "white", borderRadius: "10px" }}
+            />
+          </div>
           <Button
             type="submit"
             variant="contained"
@@ -163,13 +162,7 @@ const Register: FC<{}> = (): ReactElement => {
           >
             Register
           </Button>
-          <div
-            style={{
-              position: "absolute",
-              left: "8%",
-              transform: "translate(30%, 0)",
-            }}
-          >
+          <Box mx={10}>
             <Link
               component={Typography}
               onClick={() => {
@@ -182,7 +175,7 @@ const Register: FC<{}> = (): ReactElement => {
             >
               Already registered? Go to Login
             </Link>
-          </div>
+          </Box>
         </Box>
         <img src={footer} style={{ position: "relative" }} />
       </Box>

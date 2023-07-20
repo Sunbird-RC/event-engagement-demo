@@ -23,9 +23,9 @@ const ScanQR: React.FC<{}> = () => {
               console.log('data on qr scan ', decodedText);
               if(/\Exhibit+\-([1-9]\d?|100)/g.test(decodedText)) {
                 const { data } = useExhibitsQrcode(decodedText);
+              } else if(/\https+\:\/\//g.test(decodedText) && decodedText.includes('did:upai:badge:presentation')) {
                 navigate(pageRoutes.VERIFIED_BADGES)
-              } else if(/\https+\:\/\//g.test(decodedText)) {
-                window.open(decodedText)
+                // window.open(decodedText)
               } else {
                 console.log(`Qr code doesn't match`)
               }

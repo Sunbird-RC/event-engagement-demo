@@ -25,7 +25,7 @@ export const useExhibitsDataOnId = (exhibitId: string) => {
     ["exhibitsDet", exhibitId],
     () =>
       axiosInst
-        .get<ExhibitDetailsResponse>(`${apiRoutes.EXHIBITS_DET}${exhibitId}`)
+        .get<Exhibit>(`${apiRoutes.EXHIBITS_DET}${exhibitId}`)
         .then((res) => res.data)
   );
 }

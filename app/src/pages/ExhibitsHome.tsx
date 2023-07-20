@@ -69,12 +69,6 @@ const ExhibitsHome: FC<any> = (): ReactElement => {
         hideBtn={false}
       />
       <Box sx={{ my: 20, mx: 2, width: "100%" }}>
-        <Typography
-          variant="h6"
-          sx={{ color: "primary.main", textAlign: "start" }}
-        >
-          Exhibits:
-        </Typography>
         <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
           <Tabs value={tabIndex} onChange={handleTabChange} variant="scrollable" scrollButtons="auto">
             <Tab label="Events Scheduled" {...a11yProps(0)} />
@@ -96,7 +90,7 @@ const ExhibitsHome: FC<any> = (): ReactElement => {
               <TabContents content={visitedList} visited={true}></TabContents>
             ) : (
               <Box my={6}>
-              <Typography variant="h5"
+              <Typography variant="h5" mb={2}
                 component="h5"
                 fontWeight={"bold"}
                 color={"#4DD8DD"}>Whoops!</Typography>

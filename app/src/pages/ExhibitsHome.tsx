@@ -5,6 +5,11 @@ import ToolBar from "../layout/AppBar";
 import TabContents from "../layout/ExhibitsTable";
 import ExhibitCenter from '../assets/ExhibitCenter.svg';
 import Agenda from '../assets/Agenda.jpeg';
+import emptyList from '../assets/emptyList.svg'
+import { useNavigate } from "react-router-dom";
+import { pageRoutes } from "../routes";
+import { useKeycloak } from "@react-keycloak/web";
+
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -13,6 +18,11 @@ interface TabPanelProps {
 }
 
 const ExhibitsHome: FC<any> = (): ReactElement => {
+  const navigate = useNavigate();
+  const { keycloak } = useKeycloak();
+  if (!keycloak.authenticated) {
+    navigate(pageRoutes.REGISTER)
+  }
   const [tabIndex, setTabIndex] = useState(0);
   const { data, isLoading } = useExhibitsData();
 
@@ -68,12 +78,6 @@ const ExhibitsHome: FC<any> = (): ReactElement => {
         hideBtn={false}
       />
       <Box sx={{ my: 20, mx: 2, width: "100%" }}>
-        <Typography
-          variant="h6"
-          sx={{ color: "primary.main", textAlign: "start" }}
-        >
-          Exhibits:
-        </Typography>
         <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
           <Tabs value={tabIndex} onChange={handleTabChange} variant="scrollable" scrollButtons="auto">
             <Tab label="Events Scheduled" {...a11yProps(0)} />
@@ -91,7 +95,21 @@ const ExhibitsHome: FC<any> = (): ReactElement => {
             // "Loading ..."
             <img src={ExhibitCenter} style={{marginTop: '10%'}}/>
           ) : (
-            <TabContents content={visitedList} visited={true}></TabContents>
+            visitedList.length > 0 ? (
+              <TabContents content={visitedList} visited={true}></TabContents>
+            ) : (
+              <Box my={6}>
+              <Typography variant="h5" mb={2}
+                component="h5"
+                fontWeight={"bold"}
+                color={"#4DD8DD"}>Whoops!</Typography>
+              <img src={emptyList}/>
+              <Typography variant="h5" mt={2}
+                component="h5"
+                fontWeight={"bold"}
+                color={"#4DD8DD"}>Look’s like you haven’t visited Exhibits Please Visit the Exhibits</Typography>
+              </Box>
+            )
           )}
         </CustomTabPanel>
         <CustomTabPanel value={tabIndex} index={2}>

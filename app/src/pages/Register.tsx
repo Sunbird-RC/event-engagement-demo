@@ -1,6 +1,7 @@
 import ApartmentOutlinedIcon from "@mui/icons-material/ApartmentOutlined";
 import ContactEmergencyOutlinedIcon from "@mui/icons-material/ContactEmergencyOutlined";
 import LocalPhoneOutlinedIcon from "@mui/icons-material/LocalPhoneOutlined";
+import MailOutlineIcon from '@mui/icons-material/MailOutline';
 import {
   Box,
   Button,
@@ -12,23 +13,39 @@ import {
 import { useKeycloak } from "@react-keycloak/web";
 import { FC, ReactElement } from "react";
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
 import AnubhavLogo from "../assets/anubhavLogo.svg";
 import footer from "../assets/footer.svg";
-import { pageRoutes } from "../routes";
+import { useVistorRegister } from "../api/visitors";
 
 const Register: FC<{}> = (): ReactElement => {
-  let navigate = useNavigate();
   const { keycloak } = useKeycloak();
   const { register, handleSubmit } = useForm();
+  const { mutate: registerVisitor } = useVistorRegister();
   const onSubmit = (data: any) => {
-    console.log(data);
-    if (data.phone.length != 10) {
+    console.log('phone ' , data, data.name, data.phone.match(/^\d{10}$/), data.organization);
+    if (!(data.phone).match(/^\d{10}$/)) {
+      console.log('not match')
     }
-    if (data.name && data.phone.length == 10 && data.organisation) {
-      let path = pageRoutes.LOGIN;
-      navigate(path);
+    if (data.name && data.phone.match(/^\d{10}$/) && data.organisation) {
+      let registerJson = {
+        name: data.name,
+        mobileNumber: data.phone,
+        organization: data.organisation || "",
+        email: data.email || ""
+      }
+      registerVisitor(registerJson, {
+        onSuccess: (res: any) => {
+          console.log('res ', res);
+          keycloak.login({
+            redirectUri: `${window.location.origin}/ExhibitsHome`,
+          });
+        },
+        onError: () => {
+          console.log('error')
+        }
+      });
     } else {
+      console.log('else failed')
     }
   };
   return (
@@ -42,10 +59,9 @@ const Register: FC<{}> = (): ReactElement => {
         textAlign: "center",
       }}
     >
-      <Box sx={{ width: "100%" }}>
+      <Box mx={2} sx={{ width: "100%" }}>
         <img src={AnubhavLogo} />
-        <Typography
-          sx={{ margin: "25% 10% 0 10% !important" }}
+        <Typography my={6}
           gutterBottom
           variant="subtitle1"
           component="div"
@@ -65,6 +81,7 @@ const Register: FC<{}> = (): ReactElement => {
         >
           <div className="inputFields">
             <TextField
+              required
               id="name"
               label=""
               placeholder="Enter you name"
@@ -82,6 +99,7 @@ const Register: FC<{}> = (): ReactElement => {
           </div>
           <div className="inputFields">
             <TextField
+              required
               id="phone"
               type="number"
               label=""
@@ -100,6 +118,7 @@ const Register: FC<{}> = (): ReactElement => {
           </div>
           <div className="inputFields">
             <TextField
+              required
               id="organisation"
               label=""
               placeholder="Enter you organisation name"
@@ -115,6 +134,24 @@ const Register: FC<{}> = (): ReactElement => {
               sx={{ width: "90%", background: "white", borderRadius: "10px" }}
             />
           </div>
+          <div className="inputFields">
+            <TextField
+              id="email"
+              type="email"
+              label=""
+              placeholder="Enter you email"
+              {...register("email")}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <MailOutlineIcon />
+                  </InputAdornment>
+                ),
+              }}
+              variant="outlined"
+              sx={{ width: "90%", background: "white", borderRadius: "10px" }}
+            />
+          </div>
           <Button
             type="submit"
             variant="contained"
@@ -122,13 +159,7 @@ const Register: FC<{}> = (): ReactElement => {
           >
             Register
           </Button>
-          <div
-            style={{
-              position: "absolute",
-              left: "8%",
-              transform: "translate(30%, 0)",
-            }}
-          >
+          <Box mx={10}>
             <Link
               component={Typography}
               onClick={() => {
@@ -141,7 +172,7 @@ const Register: FC<{}> = (): ReactElement => {
             >
               Already registered? Go to Login
             </Link>
-          </div>
+          </Box>
         </Box>
         <img src={footer} style={{ position: "relative" }} />
       </Box>

@@ -1,14 +1,18 @@
 export interface Badge {
-    did: string,
-    title: string,
-    visitorName: string,
-    visitorMobileNumber: string,
+    attemptCount: number,
     date: string,
-    exhibitOsid: string,
+    did: string,
     exhibitName: string,
     exhibitOrganization: string,
-    score: number,
-    totalScore: number,
-    attempCount: number,
-    badgeWon: boolean
+    exhibitOsid: string,
+    osCreatedAt: string,
+    osCreatedBy: string,
+    osOwner: [string],
+    osUpdatedAt: string,
+    osUpdatedBy: string,
+    osid: string,
+    results: {score: number, totalScore: number, badgeWon: boolean},
+    title: string,
+    visitorMobileNumber: string,
+    visitorName: string
 }

@@ -42,14 +42,11 @@ function ToolBar(props: ToolbarProps) {
   let navigate = useNavigate();
   const { keycloak } = useKeycloak();
   const { data: badgeData } = useBadgeData();
-  // const { data: exhibitsData } = useExhibitsData();
-  const badgeWonCount = badgeData?.filter((bg) => bg.badgeWon).length || 0;
-  const badgeLeftCount = badgeData?.filter((bg) => !bg.badgeWon).length || 0;
-  // (exhibitsData?.visited.length || 0) +
-  // (exhibitsData?.unvisited.length || 0);
+  console.log('badgeData ', badgeData);
+  const badgeWonCount = badgeData && badgeData?.filter((bg: any) => bg.results.badgeWon).length || 0;
+  const badgeLeftCount = badgeData && badgeData?.filter((bg: any) => !bg.results.badgeWon).length || 0;
 
   const { data: visitorDetails } = useVistorDetails();
-  // const id = visitorDetails
 
   const { hideBtn, show, badgeOpt, toolbarHeight } = props;
   const [isOpen, setIsopen] = useState(false);
@@ -69,11 +66,13 @@ function ToolBar(props: ToolbarProps) {
         navigate(path);
         break;
       case "Credential Verification":
-        path = pageRoutes.VERIFIED_BADGES;
+        path = pageRoutes.CREDENTIAL_VERIFY;
         navigate(path);
         break;
       case "Logout":
-        keycloak.logout();
+        keycloak.logout().then(() => {
+          navigate(pageRoutes.REGISTER);
+        });
         break;
     }
   };
@@ -229,11 +228,11 @@ function ToolBar(props: ToolbarProps) {
           {listItem.map((ls, i) => (
             <ListItem
               key={i + 1}
+              onClick={() => handleNavigation(ls.label)}
               secondaryAction={
                 ls.showIcon ? (
                   <IconButton
                     aria-label="comment"
-                    onClick={() => handleNavigation(ls.label)}
                   >
                     <ArrowForwardIosRoundedIcon fontSize="small" />
                   </IconButton>

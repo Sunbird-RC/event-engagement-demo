@@ -1,6 +1,7 @@
 import BookmarkRoundedIcon from "@mui/icons-material/BookmarkRounded";
 import MuseumOutlinedIcon from "@mui/icons-material/MuseumOutlined";
 import {
+  Box,
   Card,
   CardContent,
   InputLabel,
@@ -22,12 +23,11 @@ const TabContents: React.FC<TabContentProps> = (props) => {
   const navigate = useNavigate();
 
   function navigateToDetails(data: Exhibit) {
-    data.additionalProp1.visited = visited
     const path = pageRoutes.EXHIBIT_DETAILS;
-    navigate(`${path}/${data.did}`, {state: data});
+    navigate(`${path}/${data.osid}`, {state: {data: data, visited: visited}});
   }
   return (
-    <List>
+    <List sx={{margin: 1}}>
       {content.map((exhibit, index) => {
         return (
           <ListItem
@@ -45,7 +45,7 @@ const TabContents: React.FC<TabContentProps> = (props) => {
               }}
             >
               <CardContent sx={{ padding: "0 10px 0 10px !important" }}>
-                <div
+                <Box mx={2}
                   style={{
                     display: "flex",
                     alignItems: "center",
@@ -55,7 +55,7 @@ const TabContents: React.FC<TabContentProps> = (props) => {
                   {exhibit.logoURL ? (
                     <img src={exhibit.logoURL} />
                   ) : (
-                    <MuseumOutlinedIcon color={"disabled"} />
+                    visited ? (<MuseumOutlinedIcon color={"disabled"} />) : <></>
                   )}
                   <Typography
                     ml={2}
@@ -65,10 +65,9 @@ const TabContents: React.FC<TabContentProps> = (props) => {
                   >
                     {exhibit.name}
                   </Typography>
-                </div>
+                </Box>
                 <div>
-                  <InputLabel>Kiosk Number: </InputLabel>
-                  {/* <InputLabel>Time: {new Date(`${exhibit.startDate}`).toLocaleTimeString()} </InputLabel> */}
+                  <InputLabel>Kiosk Number: {exhibit?.osid}</InputLabel>
                   <InputLabel>
                     Description:{" "}
                     {exhibit.shortDescription || exhibit.fullDescription}

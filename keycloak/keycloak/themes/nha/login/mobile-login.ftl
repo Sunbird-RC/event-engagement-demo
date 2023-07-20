@@ -21,9 +21,7 @@
         </script>
     <#elseif section = "form">
         <div class="ndear-login-card-wrapper">
-            <h3>UP@AI Login</h3>
-            <br/>
-            <b>Enter mobile number</b>
+            <b>Hey Visitor, please login using your registered phone number</b>
             <div class="box-container">
                 <#if realm.password>
                     <div>
@@ -51,7 +49,7 @@
                             </#if>
                             <input type="hidden" id="type-hidden-input" name="form_type" value="login" />
                             <button id="submit-btn" class="submit" type="submit" tabindex="3">
-                                <span>Continue</span>
+                                <span>Send OTP</span>
                             </button>
                         </form>
                     </div>

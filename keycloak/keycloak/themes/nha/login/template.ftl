@@ -37,13 +37,8 @@
     </div>
     </#if>
     <nav class="navbar navbar-expand-lg navbar-light">
-        <a class="navbar-brand" href="${properties.homepageUrl!}">
-            <#if properties.keycloakLogo = "NA">
-                <img src="${url.resourcesPath}/img/ndearLogo.svg" alt="" width="88%" height="auto">
-            <#else>
-            </#if>
-
-
+        <a class="brand-logo" href="${properties.homepageUrl!}">
+            <img src="${url.resourcesPath}/img/up-ai-anubhav-logo.png" alt="" width="88%" height="auto">
         </a>
 
     </nav>

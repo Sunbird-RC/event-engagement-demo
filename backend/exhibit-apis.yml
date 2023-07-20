@@ -9,9 +9,31 @@ info:
   description: Sunbird registry and credential api (SunbirdRC)
   title: Sunbird Registry and Credential
   version: 1.0.0
-host: 'localhost:8081'
+host: 'localhost:8000'
 basePath: /
 paths:
+  /api/v1/Leaderboard:
+    get:
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              type: object
+              properties:
+                rank:
+                  type: integer
+                name:
+                  type: string
+                mobileNumber:
+                  type: string
+                badges:
+                  type: string
+                attempts:
+                  type: integer
+                score:
+                  type: score
   '/api/v1/QRCode/{presentationId}/verify':
     parameters:
       - in: path
@@ -583,6 +605,8 @@ definitions:
         type: string
       name:
         type: string
+      mobileNumber:
+        type: string
       email:
         type: string
       organization:
@@ -684,11 +708,11 @@ definitions:
     properties:
       name:
         type: string
+      mobileNumber:
+        type: string
       email:
         type: string
       organization:
-        type: string
-      latestPresentation:
         type: string
   SuccessResult:
     type: object

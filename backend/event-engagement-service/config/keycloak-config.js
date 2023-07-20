@@ -6,6 +6,10 @@ let _keycloak;
 
 let _memoryStore;
 
+Keycloak.prototype.redirectToLogin = function(req) {
+    return true;
+};
+
 var keycloakConfig = {
     "realm": KEYCLOAK_REALM,
     "auth-server-url": KEYCLOAK_URL,

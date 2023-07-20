@@ -6,7 +6,6 @@ var BodyParser = require('body-parser');
 var Swaggerize = require('swaggerize-express');
 var SwaggerUI = require("swaggerize-ui");
 var Path = require('path');
-const constants = require('./config/config');
 const { _ } = require("lodash");
 const cors = require('cors')
 const { initKeycloak, startSession } = require('./config/keycloak-config.js');
@@ -24,17 +23,21 @@ const keycloak = initKeycloak();
 App.use(startSession());
 App.use(keycloak.middleware());
 
-App.get('/', keycloak.protect(),  function(req, res){
-    res.send("Server is up!");
- });
+App.use((req, res, next) => {
+    console.log("Serving Request: ", req.method, req.path, req.body);
+    next();
+})
 
- App.all(["/api/v1/*"], (req, res, next) => {
-    if((req.method === 'POST' && ['/api/v1/Visitor', '/api/v1/Exhibit', '/api/v1/Event', '/api/v1/Exhibit/search']
+App.all(["/api/v1/*"], (req, res, next) => {
+    if(
+        (req.method === 'GET' && req?.path === '/api/v1/Leaderboard')
+    || (req.method === 'POST' && ['/api/v1/Visitor', '/api/v1/Exhibit', '/api/v1/Event', '/api/v1/Exhibit/search']
     .some(d => req.path === d))
     || (req.method === 'GET' && _.startsWith('/api/v1/QRCode/', req.path)
      && _.endsWith('/verify', req.path))
      || (req.method === 'GET' && ((req.path === '/api/v1/Exhibit') 
      || /\/api\/v1\/Exhibit\/([a-z]|[0-9]|\-)*/.test(req.path)))) {
+        console.log("Serving request without authentication");
         next();
     }else{
         keycloak.protect()(req, res, next);
@@ -74,7 +77,6 @@ App.use(function(err, req, res, next) {
 });
 
 Server.listen(8000, function () {
-    console.log("Server URL: ", constants.CREDENTIAL_SCHEMA_URL);
     App.swagger.api.host = this.address().address + ':' + this.address().port;
     /* eslint-disable no-console */
     console.log('App running on %s:%d', this.address().address, this.address().port);

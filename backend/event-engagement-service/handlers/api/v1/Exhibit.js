@@ -1,5 +1,4 @@
 'use strict';
-var dataProvider = require('../../../data/api/v1/Exhibit.js');
 const { listExhibit, createExhibit } = require('../../../services/exhibitService.js');
 const { getCurrentUser } = require('../../../services/utils.js');
 const { _ } = require("lodash");

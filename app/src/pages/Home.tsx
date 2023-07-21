@@ -58,7 +58,7 @@ const HomePage: FC<{}> = (): ReactElement => {
         </Typography>
         <Box sx={{ display: "flex", justifyContent: "center" }}>
           <Box width={"80%"}>
-            <Typography color="white" variant="body1" mt={'16%'} mb={'4%'}>
+            <Typography color="white" variant="body1" mt={'12%'} mb={'4%'}>
               Up@ AI ANUBHAV App will help you immerse in the exhibition while
               Showcasing the Power of Credentialing.
             </Typography>
@@ -70,7 +70,7 @@ const HomePage: FC<{}> = (): ReactElement => {
               ].map((value) => {
                 return (
                   <ListItem key={value}>
-                    <ListItemButton dense>
+                    <ListItemButton dense sx={{paddingTop: '0 !important', paddingBottom: '0 !important'}}>
                       <ListItemIcon>
                         <TaskAltOutlinedIcon
                           sx={{ color: "white" }}
@@ -93,7 +93,7 @@ const HomePage: FC<{}> = (): ReactElement => {
             background: "white",
             position: "absolute",
             left: "50%",
-            top: "95%",
+            bottom: "2%",
             transform: "translate(-50%, -50%)",
             color: "primary.main",
           }}

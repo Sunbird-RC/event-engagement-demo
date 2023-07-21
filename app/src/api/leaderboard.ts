@@ -9,7 +9,7 @@ export const useLeaderboardData = () => {
   const { keycloak } = useKeycloak();
   return useQuery({
     queryKey: ["leaderboard"],
-    enabled: keycloak.authenticated,
+    enabled: !!keycloak.authenticated,
     queryFn: () => 
       axiosInst
         .get<LeaderBoardResponse>(apiRoutes.LEADER_BOARD)

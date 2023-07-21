@@ -11,14 +11,38 @@ export default defineConfig({
       devOptions: {
         enabled: true,
       },
+      workbox: {
+        maximumFileSizeToCacheInBytes: 1024 * 1024 * 10,
+      },
       manifest: {
-        theme_color: "#11cc11",
+        name: "UP @ AI अनुभव",
+        short_name: "UP @ AI अनुभव",
+        theme_color: "#203864",
+        background_color: "#67c8d1",
         icons: [
           {
-            src: "/vite.svg", // needs a 512x512 px png icon from which other asset resolutions are to be generated using pwa-asset-generator
+            src: "manifest-icon-192.maskable.png",
+            sizes: "192x192",
+            type: "image/png",
+            purpose: "any",
+          },
+          {
+            src: "manifest-icon-192.maskable.png",
+            sizes: "192x192",
+            type: "image/png",
+            purpose: "maskable",
+          },
+          {
+            src: "manifest-icon-512.maskable.png",
             sizes: "512x512",
-            type: "image/svg+xml",
-            purpose: "any maskable",
+            type: "image/png",
+            purpose: "any",
+          },
+          {
+            src: "manifest-icon-512.maskable.png",
+            sizes: "512x512",
+            type: "image/png",
+            purpose: "maskable",
           },
         ],
       },

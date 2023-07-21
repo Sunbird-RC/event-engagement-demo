@@ -59,7 +59,7 @@ const ExhibitCardDetails: FC<any> = (): ReactElement => {
     const answers = questionsData?.questions.map((question, index) => {
       return {
         questionOsid: question.osid,
-        answer: data[index],
+        answer: data[index] || "",
       };
     });
     console.log('handle finish quiz ', data, 'data')
@@ -108,14 +108,16 @@ const ExhibitCardDetails: FC<any> = (): ReactElement => {
           mx={1}
         >
           <Box sx={{ height: "80%" }}>
+            {!!exhibit?.videoURL ? (
             <div style={{ marginTop: "2%" }}>
               <iframe src={exhibit?.videoURL} width="95%"></iframe>
-            </div>
-            <Box mx={2}>
+            </div>) : <></>}
+            {!!(exhibit?.fullDescription || exhibit?.shortDescription) ? 
+            (<Box mx={2}>
               <Typography variant="body2" color={"black"} textAlign={"justify"}>
                 {exhibit?.fullDescription || exhibit?.shortDescription}
               </Typography>
-            </Box>
+            </Box>) : <></>}
             <Box
               sx={{
                 display: "flex",

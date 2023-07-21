@@ -18,7 +18,7 @@ export const pageRoutes = {
   EXHIBITS_HOME: "/ExhibitsHome",
   EXHIBIT_RESULT: "/ExhibitResult",
   LEADER_BOARD: "/LeaderBoard",
-  VERIFIED_BADGES: "/VerifiedBadges",
+  VERIFIED_BADGES: "/Verification",
   SCAN_QR: "/scan-qr",
   CREDENTIAL_VERIFY: "/CredentialVerification",
 };
@@ -103,7 +103,7 @@ export const routes: Route[] = [
   {
     key: "verifiedBadges-route",
     title: "VerifiedBadges",
-    path: "/verification/:presentationDid",
+    path: "/Verification/:presentationDid",
     enabled: true,
     component: VerifiedBadges,
   },

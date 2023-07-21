@@ -1,5 +1,5 @@
-import { Box } from "@mui/material";
-import { useCallback } from "react";
+import { Box, Button, Typography } from "@mui/material";
+import { useCallback, useState } from "react";
 import { useNavigate } from "react-router";
 import QRScanner from "../QRScanner/QRScanner";
 import { axiosInst } from "../api/axios";
@@ -14,6 +14,8 @@ const ScanQR: React.FC<{}> = () => {
   const { keycloak } = useKeycloak();
   const navigate = useNavigate();
   const { state } = useLocation();
+  let contentState = state;
+  const [errMsg, setError] = useState(false);
 
   const { data } = useExhibitsData();
   let exhibitlist: any[] = []
@@ -21,6 +23,10 @@ const ScanQR: React.FC<{}> = () => {
     exhibitlist = (data?.visited).concat(data?.unvisited)
   }
 
+  const scanAgain = (data: any) => {
+    setError(false)
+    contentState = data
+  }
   const visitExhibit = useCallback(async (qrId: string) => {
     let navParams = {}
     let osid = ""
@@ -28,13 +34,12 @@ const ScanQR: React.FC<{}> = () => {
     .then(res => {
       console.log('visitExhibit ', res)
       if (res.status === 200) {
-        if (state) {
-          state.visited = true;
-          navParams = state;
-          osid = state.data.osid
+        if (contentState) {
+          contentState.visited = true;
+          navParams = contentState;
+          osid = contentState.data.osid
         } else {
-          let content = {}
-          console.log('exhibitlist ', exhibitlist)
+          let content = {};
           exhibitlist.forEach((ls: Exhibit) => {
             console.log('qrcode ', ls, qrId)
             if(ls.qrId == qrId) {
@@ -60,15 +65,24 @@ const ScanQR: React.FC<{}> = () => {
         badgeOpt={false}
         toolbarHeight={true}
       />
-      <Box my={17}>
+      {errMsg ? (
+      <Box sx={{position: 'absolute', top:'40%', left:'25%'}}>
+        <Typography variant="h6" color={'red'}>Wrong Exhibit Qrcode</Typography>
+        <Button sx={{marginTop:'10%', color:'#67C8D1', border:'1px solid #67C8D1'}} variant="outlined" onClick={() => scanAgain(contentState)}>Scan Again</Button>    
+      </Box>
+      ) :
+      (<Box my={17}>
         <QRScanner
           onScan={(decodedText) => {
             console.log(decodedText);
             if (decodedText) {
-              console.log("data on qr scan ", decodedText);
               if (/Exhibit+\-([1-9]\d?|100)/g.test(decodedText)) {
-                if (state) {
+                if (contentState) {
+                  if (contentState.data.qrId === decodedText) {
                     visitExhibit(decodedText);
+                  } else {
+                    setError(true)
+                  }
                 } else {
                   visitExhibit(decodedText);
                 }
@@ -85,7 +99,7 @@ const ScanQR: React.FC<{}> = () => {
             }
           }}
         />
-      </Box>
+      </Box>)}
     </Box>
   );
 };

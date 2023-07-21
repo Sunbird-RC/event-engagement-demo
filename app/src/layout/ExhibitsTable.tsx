@@ -86,7 +86,8 @@ const TabContents: React.FC<TabContentProps> = (props) => {
                 </div>
               </CardContent>
             </Card>
-            <BookmarkRoundedIcon
+            {visited ? 
+            (<BookmarkRoundedIcon
               fontSize="large"
               sx={{
                 position: "absolute",
@@ -95,7 +96,7 @@ const TabContents: React.FC<TabContentProps> = (props) => {
                 color: "primary.main",
                 fontSize: "3rem",
               }}
-            ></BookmarkRoundedIcon>
+            ></BookmarkRoundedIcon>) : <></>}
           </ListItem>
         );
       })}

@@ -75,11 +75,10 @@ const ExhibitResult: FC<any> = (): ReactElement => {
     osUpdatedAt: "",
     osUpdatedBy: "",
     osid: "",
-    results: {
-      score: 0,
-      totalScore: 0,
-      badgeWon: false
-    },
+    results: {},
+    score: 0,
+    totalScore: 0,
+    badgeWon: false,
     title: "",
     visitorMobileNumber: "",
     visitorName: ""
@@ -267,14 +266,14 @@ const ExhibitResult: FC<any> = (): ReactElement => {
                 <div>
                   <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
                     <CircleIcon sx={{ color: "green" }} />
-                    <InputLabel sx={{marginLeft: '20%'}}>{badgeDet?.results?.score}</InputLabel>
+                    <InputLabel sx={{marginLeft: '20%'}}>{badgeDet?.score}</InputLabel>
                   </div>
                   <InputLabel>Correct</InputLabel>
                 </div>
                 <div>
                   <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
                     <CircleIcon sx={{ color: "red" }} />
-                    <InputLabel sx={{marginLeft: '20%'}}>{badgeDet.results.totalScore - badgeDet.results.score}</InputLabel>
+                    <InputLabel sx={{marginLeft: '20%'}}>{badgeDet.totalScore - badgeDet.score}</InputLabel>
                   </div>
                   <InputLabel>Wrong</InputLabel>
                 </div>
@@ -311,9 +310,11 @@ const ExhibitResult: FC<any> = (): ReactElement => {
           </div>)
         ): 
         (<></>)}
-        <Box mt={2} border={'1px solid black'} mx={8}>
-          <img src={`${qrcode}`} width={'100%'} style={{display:'flex', alignItems:'center'}}/>
-        </Box>
+        {badgeDet.badgeWon ? 
+          (<Box mt={2} border={'1px solid black'} mx={8}>
+            <img src={`${qrcode}`} width={'100%'} style={{display:'flex', alignItems:'center'}} alt="QrCode"/>
+          </Box>) : (<></>)
+        }
         <Grid mt={1} container spacing={3}>
           {listRow1.map((row) => (
             <Grid item xs={4}>

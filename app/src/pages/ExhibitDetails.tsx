@@ -11,7 +11,7 @@ import { grey } from "@mui/material/colors";
 import { FC, ReactElement, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import Quiz from "../Quiz/Quiz";
-import { useExhibitsDataOnId, useExhibitsQrcode } from "../api/exhibit";
+import { useExhibitsDataOnId } from "../api/exhibit";
 import { useSubmitQuiz } from "../api/quiz";
 import ToolBar from "../layout/AppBar";
 import { pageRoutes } from "../routes";
@@ -29,6 +29,7 @@ const Puller = styled(Box)(({ theme }) => ({
 }));
 
 const ExhibitCardDetails: FC<any> = (): ReactElement => {
+  const navigate = useNavigate();
   const { state } = useLocation();
   console.log('props ', state);
   const entity = state.data;
@@ -37,7 +38,6 @@ const ExhibitCardDetails: FC<any> = (): ReactElement => {
     setOpen(newOpen);
   };
 
-  const navigate = useNavigate();
   const navigateBack = () => {
     navigate(-1);
   };
@@ -47,13 +47,8 @@ const ExhibitCardDetails: FC<any> = (): ReactElement => {
   console.log('data ', data)
   const questionsData = exhibit?.quizConfig;
 
-  const {data: qrRes} = useExhibitsQrcode(entity.qrId);
   const openQrcode = () => {
-    if(qrRes.message == 'SUCCESSFUL') {
-      console.log('on success ');
-      navigate(pageRoutes.EXHIBITS_HOME)
-    }
-    // navigate(pageRoutes.SCAN_QR)
+    navigate(pageRoutes.SCAN_QR, {state: {data: entity, visited: state.visited}})
   }
   const [loading, setLoading] = useState(false);
   const { mutate: submitQuiz } = useSubmitQuiz(state.data.osid);

@@ -40,6 +40,7 @@ export const apiRoutes = {
   QR_CODE: "/api/v1/QRCode",
   verifyQrCode: (presentationDid: string) =>
     `/api/v1/QRCode/${presentationDid}/verify`,
+  LEADER_BOARD: '/api/v1/Leaderboard'
 };
 
 interface Route {
@@ -103,7 +104,7 @@ export const routes: Route[] = [
   {
     key: "verifiedBadges-route",
     title: "VerifiedBadges",
-    path: "/Verification/:presentationDid",
+    path: "/verification/:presentationDid",
     enabled: true,
     component: VerifiedBadges,
   },

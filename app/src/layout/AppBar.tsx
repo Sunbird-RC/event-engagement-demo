@@ -41,10 +41,6 @@ interface ToolbarProps {
 function ToolBar(props: ToolbarProps) {
   let navigate = useNavigate();
   const { keycloak } = useKeycloak();
-  const { data: badgeData } = useBadgeData();
-  console.log('badgeData ', badgeData);
-  const badgeWonCount = badgeData && badgeData?.filter((bg: any) => bg.results.badgeWon).length || 0;
-  const badgeLeftCount = badgeData && badgeData?.filter((bg: any) => !bg.results.badgeWon).length || 0;
 
   const { data: visitorDetails } = useVistorDetails();
 
@@ -54,6 +50,20 @@ function ToolBar(props: ToolbarProps) {
   const ToggleSidebar = () => {
     isOpen === true ? setIsopen(false) : setIsopen(true);
   };
+
+  const { data: badgeData } = useBadgeData();
+  let badgeWonCount = 0
+  let badgeLeftCount = 0
+  if(badgeData && badgeData?.length > 0) {
+    badgeData.forEach(bg => {
+      if(bg.badgeWon) {
+        badgeWonCount++
+      } else {
+        badgeLeftCount++
+      }
+    })
+  }
+
   const handleNavigation = (label: any) => {
     let path = "";
     switch (label) {

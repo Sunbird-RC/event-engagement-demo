@@ -40,6 +40,7 @@ export const apiRoutes = {
   QR_CODE: "/api/v1/QRCode",
   verifyQrCode: (presentationDid: string) =>
     `/api/v1/QRCode/${presentationDid}/verify`,
+  LEADER_BOARD: '/api/v1/Leaderboard'
 };
 
 interface Route {

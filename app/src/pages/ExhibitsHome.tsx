@@ -19,8 +19,8 @@ interface TabPanelProps {
 
 const ExhibitsHome: FC<any> = (): ReactElement => {
   const navigate = useNavigate();
-  const { keycloak } = useKeycloak();
-  if (!keycloak.authenticated) {
+  const { keycloak, initialized } = useKeycloak();
+  if (initialized && !keycloak.authenticated) {
     navigate(pageRoutes.REGISTER)
   }
   const [tabIndex, setTabIndex] = useState(0);

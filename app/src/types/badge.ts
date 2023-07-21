@@ -11,7 +11,10 @@ export interface Badge {
     osUpdatedAt: string,
     osUpdatedBy: string,
     osid: string,
-    results: {score: number, totalScore: number, badgeWon: boolean},
+    results: {},
+    score: number, 
+    totalScore: number, 
+    badgeWon: boolean,
     title: string,
     visitorMobileNumber: string,
     visitorName: string

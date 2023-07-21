@@ -147,7 +147,7 @@ function ToolBar(props: ToolbarProps) {
               <>
                 <QrCodeScannerIcon
                   onClick={() => {
-                    navigate("/scan-qr");
+                    navigate(pageRoutes.SCAN_QR);
                   }}
                   style={{
                     position: "absolute",

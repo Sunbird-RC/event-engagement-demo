@@ -39,7 +39,7 @@ const ExhibitCardDetails: FC<any> = (): ReactElement => {
   };
 
   const navigateBack = () => {
-    navigate(-1);
+    navigate(pageRoutes.EXHIBITS_HOME);
   };
 
   const { data } = useExhibitsDataOnId(state.data.osid);

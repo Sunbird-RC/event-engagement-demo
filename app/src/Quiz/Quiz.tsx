@@ -74,9 +74,9 @@ const Quiz: React.FC<QuizProps> = ({ questions, onFinish }) => {
           </StyledStep>
         ))}
       </Stepper>
-      <Box px={2}>
+      <Box sx={{marginTop: '40px !important'}} px={2}>
         <FormControl component="fieldset">
-          <Typography mb={3} fontWeight={500}>
+          <Typography mb={2} fontWeight={500}>
             {currentQuestion.question}
           </Typography>
           <RadioGroup
@@ -98,7 +98,7 @@ const Quiz: React.FC<QuizProps> = ({ questions, onFinish }) => {
           </RadioGroup>
         </FormControl>
       </Box>
-      <Box
+      <Box sx={{marginTop: '40px !important'}}
         display={"flex"}
         justifyContent={"space-between"}
         alignItems={"center"}

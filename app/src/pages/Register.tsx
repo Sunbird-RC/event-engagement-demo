@@ -155,11 +155,11 @@ const Register: FC<{}> = (): ReactElement => {
           <Button
             type="submit"
             variant="contained"
-            sx={{ mt: 10, mb: 2, width: "50%", backgroundColor: "white" }}
+            sx={{ mt: 6, mb: 2, width: "50%", backgroundColor: "white" }}
           >
             Register
           </Button>
-          <Box mx={10}>
+          <Box mx={10} mb={2}>
             <Link
               component={Typography}
               onClick={() => {

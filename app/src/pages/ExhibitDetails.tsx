@@ -11,7 +11,7 @@ import { grey } from "@mui/material/colors";
 import { FC, ReactElement, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import Quiz from "../Quiz/Quiz";
-import { useExhibitsDataOnId } from "../api/exhibit";
+import { useExhibitsDataOnId, useExhibitsQrcode } from "../api/exhibit";
 import { useSubmitQuiz } from "../api/quiz";
 import ToolBar from "../layout/AppBar";
 import { pageRoutes } from "../routes";
@@ -47,8 +47,13 @@ const ExhibitCardDetails: FC<any> = (): ReactElement => {
   console.log('data ', data)
   const questionsData = exhibit?.quizConfig;
 
+  const {data: qrRes} = useExhibitsQrcode(entity.qrId);
   const openQrcode = () => {
-    navigate(pageRoutes.SCAN_QR)
+    if(qrRes.message == 'SUCCESSFUL') {
+      console.log('on success ');
+      navigate(pageRoutes.EXHIBITS_HOME)
+    }
+    // navigate(pageRoutes.SCAN_QR)
   }
   const [loading, setLoading] = useState(false);
   const { mutate: submitQuiz } = useSubmitQuiz(state.data.osid);

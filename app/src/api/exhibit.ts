@@ -32,11 +32,10 @@ export const useExhibitsDataOnId = (exhibitId: string) => {
 }
 
 export const useExhibitsQrcode = (qrId: string) => {
-  console.log('qr ', qrId)
   const { keycloak } = useKeycloak();
   return useQuery({
     queryKey: ["qrCodescan"],
-    enabled: keycloak.authenticated,
+    enabled: keycloak.authenticated && !!qrId,
     queryFn: () =>
       axiosInst
         .put<any>(`${apiRoutes.EXHIBIT_QRSCAN}/${qrId}`)

@@ -104,7 +104,7 @@ export const routes: Route[] = [
   {
     key: "verifiedBadges-route",
     title: "VerifiedBadges",
-    path: "/Verification/:presentationDid",
+    path: "/verification/:presentationDid",
     enabled: true,
     component: VerifiedBadges,
   },

@@ -47,8 +47,9 @@ const ScanQR: React.FC<{}> = () => {
                 /https+\:\/\//g.test(decodedText) &&
                 decodedText.includes("did:upai:badge:presentation")
               ) {
-                const url = new URL(decodedText);
-                navigate(url.pathname);
+                let did = decodedText.substring(decodedText.lastIndexOf('/')+1);
+                console.log('decode text ', did)
+                navigate(pageRoutes.VERIFIED_BADGES+'/'+did);
               } else {
                 console.log(`Qr code doesn't match`);
               }

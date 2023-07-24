@@ -216,19 +216,17 @@ const ExhibitCardDetails: FC<any> = (): ReactElement => {
               </Typography>
             </Box>) : <></>}
             <Box
+            mx={10}
               sx={{
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                margin: "1rem",
                 border: "1px solid #348681",
                 boxShadow: "0px 4px 4px 0px rgba(0, 0, 0, 0.25)",
-                width: "60%",
-                transform: "translate(25%, 0%)",
               }}
             >
-              <img src={QuizImg} width={60} height={60}></img>
-              <div style={{ margin: "1rem" }}>
+              <img src={QuizImg} width={'25%'} height={'25%'}></img>
+              <div style={{ margin: "1rem 0.5rem 1rem 0.2rem" }}>
                 <Typography
                   variant="body2"
                   color={"#48DDE4"}
@@ -245,21 +243,21 @@ const ExhibitCardDetails: FC<any> = (): ReactElement => {
               </div>
             </Box>
             <Box mt={4} mb={2} display={"flex"} justifyContent={"space-around"}>
-              {!entity?.qrRequired ? (
-                <Button
-                  sx={{ color: "#67C8D1", border: "1px solid #67C8D1" }}
-                  variant="outlined"
-                  onClick={toggleDrawer(true)}
-                >
-                  Play
-                </Button>
-              ) : (
+              {(entity?.qrRequired && !state.visited) ? (
                 <Button
                   sx={{ color: "#67C8D1", border: "1px solid #67C8D1" }}
                   variant="outlined"
                   onClick={() => openQrcode()}
                 >
                   Scan QR
+                </Button>
+              ) : (
+                <Button
+                  sx={{ color: "#67C8D1", border: "1px solid #67C8D1" }}
+                  variant="outlined"
+                  onClick={toggleDrawer(true)}
+                >
+                  Play
                 </Button>
               )}
             </Box>

@@ -78,11 +78,11 @@ const ExhibitsHome: FC<any> = (): ReactElement => {
         hideBtn={false}
       />
       <Box sx={{ my: 20, mx: 2, width: "100%" }}>
-        <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-          <Tabs value={tabIndex} onChange={handleTabChange} variant="scrollable" scrollButtons="auto">
-            <Tab label="Events Scheduled" {...a11yProps(0)} />
-            <Tab label="Visited Exhibits" {...a11yProps(1)} />
-            <Tab label="Not visited Exhibits" {...a11yProps(2)} />
+        <Box sx={{ bgcolor: 'transparent'}}>
+          <Tabs value={tabIndex} onChange={handleTabChange} variant="scrollable" scrollButtons allowScrollButtonsMobile>
+            <Tab label="Schedule" {...a11yProps(0)} />
+            <Tab label="All Exhibits" {...a11yProps(1)} />
+            <Tab label="Exhibits visited" {...a11yProps(2)} />
           </Tabs>
         </Box>
         <CustomTabPanel value={tabIndex} index={0}>
@@ -90,7 +90,7 @@ const ExhibitsHome: FC<any> = (): ReactElement => {
             <img src={Agenda} width={'100%'} height={'100%'}/>
           </Box>
         </CustomTabPanel>
-        <CustomTabPanel value={tabIndex} index={1}>
+        <CustomTabPanel value={tabIndex} index={2}>
           {isLoading ? (
             // "Loading ..."
             <img src={ExhibitCenter} style={{marginTop: '10%'}}/>
@@ -99,20 +99,16 @@ const ExhibitsHome: FC<any> = (): ReactElement => {
               <TabContents content={visitedList} visited={true}></TabContents>
             ) : (
               <Box my={6}>
-              <Typography variant="h5" mb={2}
-                component="h5"
-                fontWeight={"bold"}
-                color={"#4DD8DD"}>Whoops!</Typography>
               <img src={emptyList}/>
               <Typography variant="h5" mt={2}
                 component="h5"
                 fontWeight={"bold"}
-                color={"#4DD8DD"}>Look’s like you haven’t visited Exhibits Please Visit the Exhibits</Typography>
+                color={"#4DD8DD"}>Please visit the Experience Center</Typography>
               </Box>
             )
           )}
         </CustomTabPanel>
-        <CustomTabPanel value={tabIndex} index={2}>
+        <CustomTabPanel value={tabIndex} index={1}>
           {isLoading ? (
             "Loading ..."
           ) : (

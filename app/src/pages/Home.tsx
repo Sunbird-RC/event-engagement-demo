@@ -36,11 +36,12 @@ const HomePage: FC<{}> = (): ReactElement => {
         display: "flex",
         justifyContent: "center",
         textAlign: "center",
+        flexDirection: 'column'
       }}
     >
-      <img src={logo} style={{ position: "absolute" }} />
-      <Box sx={{ my: 3, mx: 2, color: "white", marginTop: "10rem" }}>
-        <Box mt={8} sx={{ display: "flex", justifyContent: "center" }}>
+      <img src={logo} style={{ position: "sticky" }} />
+      <Box sx={{ my: 3, mx: 2, color: "white", marginTop: "2rem" }}>
+        <Box sx={{ display: "flex", justifyContent: "center" }}>
           <Box width={"60%"}>
             <Typography
               gutterBottom
@@ -85,21 +86,22 @@ const HomePage: FC<{}> = (): ReactElement => {
           </Box>
         </Box>
 
-        <img src={footer} style={{ position: "relative" }} />
-        <Button
-          variant="contained"
-          onClick={handleNavigate}
-          sx={{
-            background: "white",
-            position: "absolute",
-            left: "50%",
-            bottom: "2%",
-            transform: "translate(-50%, -50%)",
-            color: "primary.main",
-          }}
-        >
-          Start the experience
-        </Button>
+      </Box>
+      <Box style={{position:'sticky', display: 'flex', justifyContent: 'center'}}>
+        <Box mt={15} style={{position:'absolute'}}>
+          <Button
+            variant="contained"
+            onClick={handleNavigate}
+            sx={{
+              background: "white",
+              color: "primary.main",
+              alignItems: 'center'
+            }}
+          >
+            Start the experience
+          </Button>
+        </Box>
+        <img src={footer} style={{width:'100%'}} />
       </Box>
     </Box>
   );

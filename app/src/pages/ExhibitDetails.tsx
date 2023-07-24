@@ -245,21 +245,21 @@ const ExhibitCardDetails: FC<any> = (): ReactElement => {
               </div>
             </Box>
             <Box mt={4} mb={2} display={"flex"} justifyContent={"space-around"}>
-              {!entity?.qrRequired ? (
-                <Button
-                  sx={{ color: "#67C8D1", border: "1px solid #67C8D1" }}
-                  variant="outlined"
-                  onClick={toggleDrawer(true)}
-                >
-                  Play
-                </Button>
-              ) : (
+              {(entity?.qrRequired && !state.visited) ? (
                 <Button
                   sx={{ color: "#67C8D1", border: "1px solid #67C8D1" }}
                   variant="outlined"
                   onClick={() => openQrcode()}
                 >
                   Scan QR
+                </Button>
+              ) : (
+                <Button
+                  sx={{ color: "#67C8D1", border: "1px solid #67C8D1" }}
+                  variant="outlined"
+                  onClick={toggleDrawer(true)}
+                >
+                  Play
                 </Button>
               )}
             </Box>

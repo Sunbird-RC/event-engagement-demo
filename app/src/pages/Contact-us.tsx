@@ -8,6 +8,9 @@ import ToolBar from "../layout/AppBar";
 
 const ContactUS: FC<{}> = (): ReactElement => {
 
+  const handleFeedbackform = () => {
+    window.open('https://forms.gle/vmCX38h1uXWDnzQV9')
+  }
   return (
     <Box sx={{
         flexGrow: 1,
@@ -28,7 +31,7 @@ const ContactUS: FC<{}> = (): ReactElement => {
             <Typography variant="h5" mt={4} sx={{ color: "primary.main", fontWeight:'bold' }}>
                 Give your Feedback for event
             </Typography>
-            <Link component={Typography} variant="body2" sx={{ textAlign: "center", color: '#1F3864', fontWeight:'bold' }}>Link</Link>
+            <Link component={Typography} variant="body2" sx={{ textAlign: "center", color: '#1F3864', fontWeight:'bold' }} onClick={handleFeedbackform}>Link</Link>
         </Box>
       </Box>
     </Box>

@@ -27,7 +27,7 @@ const createOrUpdate = async (exhibit, visitor, results) => {
         quiz.attemptCount += 1;
     }
     quiz.date = new Date().toISOString();
-    quiz = {...quiz, results};
+    quiz = {...quiz, ...results};
     let url = `${serviceUrl}`;
     let method = 'post';
     if (quizExists) {
@@ -135,10 +135,10 @@ const getLeaderboard = async () => {
         result[item?.visitorMobileNumber] = {
             ...result[item?.visitorMobileNumber],
             badges: result[item?.visitorMobileNumber].badges + 1,
-            attempts: result[item?.visitorMobileNumber].attempts + item?.attempts,
+            attempts: result[item?.visitorMobileNumber].attempts + item?.attemptCount,
             score: result[item?.visitorMobileNumber].score + item?.score,
         }
-        return res;
+        return result;
     }, {});
     return sortLeaderboard(visitorQuizes);
 }

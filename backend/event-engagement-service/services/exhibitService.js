@@ -13,10 +13,10 @@ const checkAnswers = (submitions, questions) => {
             question,
             correctAnswer,
             answered: `${answer}`,
-            isCorrect: answer === correctAnswer
+            isCorrect: answer == correctAnswer
         };
     });
-    const score = answers?.filter(d => d.isCorrect).length;
+    const score = answers?.filter(d => d.isCorrect)?.length || 0;
     return {
         answers,
         score,
@@ -61,12 +61,29 @@ const createExhibit = async (payload, headers) => {
 
 const updateExhibit = async (osid, payload) => {
     const entity = await getExhibitByOsid(osid);
-    const finalEntity = {...entity, ...payload};
+    const finalEntity = {
+        ...entity,
+        ...payload,
+        quizConfig: {
+            title: "Quiz",
+            ...entity?.quizConfig,
+            ...payload?.quizConfig,
+        }
+    };
     if (!finalEntity?.did) {
         const did = await generateDid("exhibit");
         finalEntity["did"] = `${did}`;
     }
-    return axios.put(serviceUrl, finalEntity).then(resp => resp.data);
+    return axios.put(`${serviceUrl}/${osid}`, finalEntity).then(resp => resp.data);
+};
+
+const updateExhibitProperty = async (osid, property, payload) => {
+    return axios.put(`${serviceUrl}/${osid}/${property}`, payload, {
+        headers: {
+            "Content-Type": "application/json"
+        }
+    })
+    .then(resp => resp.data);
 };
 
 const deleteExhibit = (exhibitOsid) => {
@@ -118,4 +135,5 @@ module.exports = {
     checkAnswers,
     searchExhibit,
     findExhibitByKeyValue,
+    updateExhibitProperty,
 }

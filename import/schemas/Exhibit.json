@@ -19,6 +19,7 @@
         "did",
         "boothNumber"
       ],
+      "additionalProperties": true,
       "properties": {
         "did": {
           "type": "string"
@@ -60,6 +61,22 @@
         "organization": {
           "type": "string",
           "title": "Organization"
+        },
+        "imageLinks": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "pdfLink": {
+          "type": "string"
+        },
+        "pptLink": {
+          "type": "string"
+        },
+        "qrRequired" : {
+          "type": "boolean",
+          "default": true
         },
         "qrId": {
           "type": "string",

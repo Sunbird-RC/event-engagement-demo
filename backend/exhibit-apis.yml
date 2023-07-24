@@ -373,29 +373,7 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/Exhibit'
-  '/api/v1/Exhibit/{entityId}/{property}/{propertyId}':
-    get:
-      parameters:
-        - name: entityId
-          in: path
-          description: Id of the Exhibit
-          required: true
-          type: string
-        - name: property
-          in: path
-          description: Schema property field
-          required: true
-          type: string
-        - name: propertyId
-          in: path
-          description: Id of schema property field
-          required: true
-          type: string
-      responses:
-        '200':
-          description: OK
-          schema:
-            $ref: '#/definitions/SuccessResult'
+  '/api/v1/Exhibit/{entityId}/{property}':
     put:
       description: ' new update'
       parameters:
@@ -409,23 +387,13 @@ paths:
           description: Schema property field
           required: true
           type: string
-        - name: propertyId
-          in: path
-          description: Id of schema property field
-          required: true
-          type: string
         - in: body
           name: body
           required: false
           schema:
             type: object
             properties:
-              key1:
-                type: string
-                default: val1
-              send:
-                type: boolean
-                description: If the required property needs to be sent for attestation
+              value: {}
       responses:
         '200':
           description: OK
@@ -621,8 +589,6 @@ definitions:
   Exhibit:
     type: object
     title: The Exhibit Schema
-    required:
-      - boothNumber
     additionalProperties: true
     properties:
       did: 
@@ -647,10 +613,21 @@ definitions:
         format: date-time
       organization:
         type: string
+      imageLinks:
+        type: array
+        items:
+          type: string
+      pdfLink:
+        type: string
+      pptLink:
+        type: string
+      qrRequired:
+        type: boolean
       qrId:
         type: string
       quizConfig:
         type: object
+        additionalProperties: true
         properties:
           title:
             type: string
@@ -662,6 +639,7 @@ definitions:
             type: array
             items:
               type: object
+              additionalProperties: true
               properties:
                 question:
                   type: string

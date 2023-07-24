@@ -47,6 +47,8 @@ App.all(["/api/v1/*"], (req, res, next) => {
         next();
     } else if (req.method === "POST" && reqPath === "/api/v1/Exhibit") {
         keycloak.protect("realm:exhibit-manager")(req, res, next);
+    } else if (req.method === "PUT" && /^\/api\/v1\/Exhibit\/([a-z]|[0-9]|\-)+\/([a-z])+$/i.test(req.path)) {
+        keycloak.protect("realm:exhibit-manager")(req, res, next);
     } else if (req.method === "POST" && reqPath === "/api/v1/Event") {
         keycloak.protect("realm:event-manager")(req, res, next);
     }

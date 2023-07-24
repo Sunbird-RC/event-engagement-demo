@@ -8,7 +8,8 @@ fs.readFile(csvFilePath, (err, inputD) => {
     if (err) throw err;
     const data = arrayofArrays(inputD.toString());
     const rows = data.slice(1);
-    const objs = rows.map(row => {
+    const objs = rows.map(d1 => {
+        const row = d1.map(d => !!d ? `${d}` : d);
         return {
             "name": row[1],
             "shortDescription": row[34],
@@ -17,6 +18,10 @@ fs.readFile(csvFilePath, (err, inputD) => {
             "videoURL": row[3],
             "boothNumber": `${row[35]}`,
             "organization": "",
+            "requireQr": `${row[36]}` === "Yes",
+            "pptLink": "",
+            "pdfLink": row[37],
+            "imageLinks": [row[38], row[39]].filter(d => d),
             "qrId": `${row[0]}`,
             "quizConfig": {
                 "title": "Quiz",
@@ -88,5 +93,5 @@ const arrayofArrays = (data) => convertCSVToArray(data, {
 
 
 function writeToFile(fileName, input) {
-    fs.writeFileSync(fileName, JSON.stringify(input));
+    fs.writeFileSync(fileName, JSON.stringify(input, null, 4));
 }

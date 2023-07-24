@@ -105,7 +105,7 @@ function ToolBar(props: ToolbarProps) {
   ];
   return (
     <>
-      <Box className="App wrapper" id="page-wrap">
+      <Box className="App wrapper" id="page-wrap" position={'sticky'}>
         <AppBar position="static">
           <Toolbar sx={{ position: "absolute", padding: "0" }}>
             <img

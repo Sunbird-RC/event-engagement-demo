@@ -14,6 +14,10 @@ export interface Exhibit {
   osUpdatedBy:string, 
   osid:string, 
   qrId:string, 
+  pdfLink: string,
+  pptLink: string
+  qrRequired: boolean,
+  imageLinks: [string],
   quizConfig: {
     title: string,
     description: string,
@@ -55,6 +59,10 @@ export interface ExhibitDetailsResponse {
   osUpdatedBy:string, 
   osid:string, 
   qrId:string, 
+  pdfLink: string,
+  pptLink: string
+  qrRequired: boolean,
+  imageLinks: [string],
   quizConfig: {
     title: string,
     description: string,

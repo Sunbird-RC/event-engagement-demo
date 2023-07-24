@@ -68,7 +68,7 @@ const ExhibitsHome: FC<any> = (): ReactElement => {
         backgroundColor: "whitesmoke",
         display: "flex",
         justifyContent: "center",
-        width: "100%",
+        width: "100%"
       }}
     >
       <ToolBar

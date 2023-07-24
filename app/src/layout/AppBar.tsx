@@ -68,6 +68,7 @@ function ToolBar(props: ToolbarProps) {
     let path = "";
     switch (label) {
       case "Exhibits":
+        ToggleSidebar()
         path = pageRoutes.EXHIBITS_HOME;
         navigate(path);
         break;
@@ -77,6 +78,10 @@ function ToolBar(props: ToolbarProps) {
         break;
       case "Credential Verification":
         path = pageRoutes.CREDENTIAL_VERIFY;
+        navigate(path);
+        break;
+      case "Contact us":
+        path = pageRoutes.CONTACT_US;
         navigate(path);
         break;
       case "Logout":
@@ -95,6 +100,7 @@ function ToolBar(props: ToolbarProps) {
     { label: "Exhibits", showIcon: true },
     { label: "Leader board", showIcon: true },
     { label: "Credential Verification", showIcon: true },
+    { label: "Contact us", showIcon: true },
     { label: "Logout", showIcon: false },
   ];
   return (
@@ -152,7 +158,8 @@ function ToolBar(props: ToolbarProps) {
                   style={{
                     position: "absolute",
                     transform: "translate(-50%, -50%)",
-                    right: "12%",
+                    right: "10%",
+                    fontSize: '2rem',
                     top: "2.8rem",
                   }}
                 />
@@ -160,11 +167,11 @@ function ToolBar(props: ToolbarProps) {
                   style={{
                     position: "absolute",
                     transform: "translate(-50%, -50%)",
-                    right: "4%",
+                    right: "1%",
                     top: "2.8rem",
-                    width: "7%",
-                    fontSize: "7px",
-                    lineHeight: "7px",
+                    width: "9%",
+                    fontSize: "8px",
+                    lineHeight: "9px",
                   }}
                 >
                   {" "}

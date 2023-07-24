@@ -62,12 +62,13 @@ const TabContents: React.FC<TabContentProps> = (props) => {
                     variant="h6"
                     fontWeight={"bold"}
                     color={"#212C62"}
+                    textAlign={'center'}
                   >
                     {exhibit.name}
                   </Typography>
                 </Box>
                 <div>
-                  <InputLabel>Kiosk Number: {exhibit?.osid}</InputLabel>
+                  <InputLabel>Kiosk Type: {exhibit?.boothNumber}</InputLabel>
                   <InputLabel>
                     Description:{" "}
                     {exhibit.shortDescription || exhibit.fullDescription}

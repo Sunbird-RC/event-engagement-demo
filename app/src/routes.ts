@@ -1,3 +1,4 @@
+import ContactUS from "./pages/Contact-us";
 import CredentialVerification from "./pages/CredentialVerify";
 import ExhibitCardDetails from "./pages/ExhibitDetails";
 import ExhibitResult from "./pages/ExhibitResult";
@@ -20,7 +21,8 @@ export const pageRoutes = {
   LEADER_BOARD: "/LeaderBoard",
   VERIFIED_BADGES: "/Verification",
   SCAN_QR: "/scan-qr",
-  CREDENTIAL_VERIFY: "/CredentialVerification",
+  CREDENTIAL_VERIFY: "/CredentialVerification", 
+  CONTACT_US: "/ContactUS"
 };
 
 export const apiRoutes = {
@@ -122,4 +124,11 @@ export const routes: Route[] = [
     enabled: true,
     component: CredentialVerification,
   },
+  {
+    key: "contactus-route",
+    title: "ContactUS",
+    path: "/ContactUS",
+    enabled: true,
+    component: ContactUS,
+  }
 ];

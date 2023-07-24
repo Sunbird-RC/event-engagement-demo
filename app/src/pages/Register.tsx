@@ -61,15 +61,14 @@ const Register: FC<{}> = (): ReactElement => {
     >
       <Box mx={2} sx={{ width: "100%" }}>
         <img src={AnubhavLogo} />
-        <Typography my={6}
+        <Typography my={6} mx={3}
           gutterBottom
           variant="subtitle1"
           component="div"
           color={"#1F3665"}
           fontWeight={"bold"}
         >
-          Hey Visitor,would be great if you could register with us before the
-          experience
+          Hey Guest, please enter the details below would be great if you could register with us before the experience
         </Typography>
         <Box
           width={"100%"}

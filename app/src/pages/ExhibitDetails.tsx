@@ -252,44 +252,47 @@ const ExhibitCardDetails: FC<any> = (): ReactElement => {
                   Scan QR
                 </Button>
               ) : (
-                <Button
-                  sx={{ color: "#67C8D1", border: "1px solid #67C8D1" }}
-                  variant="outlined"
-                  onClick={toggleDrawer(true)}
-                >
-                  Play
-                </Button>
+                (questionsData && questionsData.questions.length > 0) ? 
+                  (<Button
+                    sx={{ color: "#67C8D1", border: "1px solid #67C8D1" }}
+                    variant="outlined"
+                    onClick={toggleDrawer(true)}
+                  >
+                    Play
+                  </Button>
+                ): <></>
               )}
             </Box>
           </Box>
         </Box>
       </Box>
-      <SwipeableDrawer
-        onClose={toggleDrawer(false)}
-        onOpen={toggleDrawer(true)}
-        open={open}
-        anchor="bottom"
-        disableSwipeToOpen
-      >
-        <Box height={"60vh"}>
-          <Box
-            p={1}
-            display={"flex"}
-            justifyContent={"center"}
-            alignItems={"center"}
-          >
-            <Puller />
+      {(questionsData && questionsData.questions.length > 0) ?
+        <SwipeableDrawer
+          onClose={toggleDrawer(false)}
+          onOpen={toggleDrawer(true)}
+          open={open}
+          anchor="bottom"
+          disableSwipeToOpen
+        >
+          <Box height={"60vh"}>
+            <Box
+              p={1}
+              display={"flex"}
+              justifyContent={"center"}
+              alignItems={"center"}
+            >
+              <Puller />
+            </Box>
+            <Box px={4}>
+              {questionsData?.questions && (
+                <Quiz
+                  questions={questionsData.questions}
+                  onFinish={handleFinishQuiz}
+                />
+              )}
+            </Box>
           </Box>
-          <Box px={4}>
-            {questionsData?.questions && (
-              <Quiz
-                questions={questionsData.questions}
-                onFinish={handleFinishQuiz}
-              />
-            )}
-          </Box>
-        </Box>
-      </SwipeableDrawer>
+        </SwipeableDrawer> : <></>}
       <LoadingController loading={loading}/>
     </Box>
   );
